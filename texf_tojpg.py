@@ -1,23 +1,37 @@
 import re
 import os
-import sys
 import PyPDF2
 import PythonMagick
 from pdflatex import PDFLaTeX
 
-def sat(test, den="200"):
-    with open(test, mode='r') as fl:
-        text = fl.read()
+def tex_framed_tojpg(filen, den="200"):
+    if not os.path.isfile(filen):
+        print(os.getcwd())
+        print("%s is not a file name." % filen)
+        return
 
-    nam_suf = re.search(r"\.", test)
+    filedir = os.path.dirname(filen)
+    filename = os.path.basename(filen)
+
+    if filedir != '':
+        os.chdir(filedir)
+
+    with open(filename, mode='r') as fl:
+        try:
+            text = fl.read()
+        except Exception as e:
+            print(e)
+            return
+
+    nam_suf = re.search(r"\.", filename)
     # nf is 'no frame'
     if nam_suf:
         nam_pos = nam_suf.span()
-        test_nosuf = test[:nam_pos[0]]
-        test_nf = test[:nam_pos[0]] + "_nf" + test[nam_pos[0]:]
+        filename_nosuf = filename[:nam_pos[0]]
+        filename_nf = filename[:nam_pos[0]] + "_nf" + filename[nam_pos[0]:]
     else:
-        test_nosuf = test
-        test_nf = test + "_nf"
+        filename_nosuf = filename
+        filename_nf = filename + "_nf"
 
     # add package xcolor
     text = re.sub(r"\\documentstyle", "\\documentclass", text) # deal with 'documentstyle'
@@ -42,29 +56,31 @@ def sat(test, den="200"):
         formu =  re.search(pattern, text2, re.S)
 
 
-    with open(test, mode='w') as fl:
+    with open(filename, mode='w') as fl:
         fl.write(text)
 
     if write_nf:
-        with open(test_nf, mode='w') as fl_nf:
+        with open(filename_nf, mode='w') as fl_nf:
             fl_nf.write(text1)
         
     # get pdfs
-    pdfl = PDFLaTeX.from_texfile(test)
-    pdfl_nf = PDFLaTeX.from_texfile(test_nf)
+    pdfl = PDFLaTeX.from_texfile(filename)
+    pdfl_nf = PDFLaTeX.from_texfile(filename_nf)
     try:
         pdfl.create_pdf(keep_pdf_file=True)
         pdfl_nf.create_pdf(keep_pdf_file=True)
     except FileNotFoundError:
-        print("failed to get pdfs of %s." % test)
+        print("Lack dependencies to get pdfs of %s." % filename)
         return
-
-    if not os.path.isdir(test_nosuf + "_images"):
-        os.mkdir(test_nosuf + "_images")
-    os.chdir(test_nosuf + "_images")
+    except Exception as e:
+        print(e)
+        
+    if not os.path.isdir(filename_nosuf + "_images"):
+        os.mkdir(filename_nosuf + "_images")
+    os.chdir(filename_nosuf + "_images")
     
 
-    for pdffilename in [chsuf(test, "pdf"), chsuf(test_nf, "pdf")]:
+    for pdffilename in [chsuf(filename, "pdf"), chsuf(filename_nf, "pdf")]:
         pdf_im = PyPDF2.PdfFileReader(open("..//" + pdffilename[0], "rb"))
         npage = pdf_im.getNumPages() 
         print("Converting %d pages..." % npage)
@@ -75,6 +91,11 @@ def sat(test, den="200"):
             im.read("..//" + pdffilename[0] + '[' + str(p) +']')
             print("    Converting %d/%d of %s..." % (p+1, npage, pdffilename[1]))
             im.write(pdffilename[1] + "-" + str(p)+ '.jpg')
+
+    # os.remove(filename_nf)
+    # os.remove(chsuf(filename, "pdf"))
+    # os.remove(chsuf(filename_nf, "pdf"))
+    os.chdir("..")
 
 def chsuf(filename, suf):
     nam_suf = re.search(r"\.", filename)
@@ -87,13 +108,3 @@ def chsuf(filename, suf):
         flname = filename
 
     return outname, flname
-
-argn = len(sys.argv)
-if argn == 1:
-    print("Need a tex file name.")
-elif argn == 2:
-    sat(sys.argv[1])
-elif argn == 3:
-    sat(sys.argv[1], sys.argv[2])
-else:
-    print("Too much arguments.")
