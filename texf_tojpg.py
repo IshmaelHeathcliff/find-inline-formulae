@@ -37,7 +37,7 @@ def tex_framed_tojpg(filen, den="200"):
     # add package xcolor
     # deal with 'documentstyle'
     text = re.sub(r"\\documentstyle", "\\documentclass", text)
-    re.sub(r"(?<!%)\\usepackage.*?\{epsfig}", "", text)
+    text = re.sub(r"(?<!%)\\usepackage.*?\{epsfig}", "", text)
     if not re.search(r"(?<!%)\\usepackage.*?\{xcolor}", text):
         pack = re.search(r"(?<!%)\\documentclass.*?\{\w*?}", text)
         if pack:
