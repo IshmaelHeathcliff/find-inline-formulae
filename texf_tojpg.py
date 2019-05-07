@@ -4,6 +4,7 @@ import PyPDF2
 import PythonMagick
 from pdflatex import PDFLaTeX
 
+
 def tex_framed_tojpg(filen, den="200"):
     if not os.path.isfile(filen):
         print(os.getcwd())
@@ -34,27 +35,38 @@ def tex_framed_tojpg(filen, den="200"):
         filename_nf = filename + "_nf"
 
     # add package xcolor
-    text = re.sub(r"\\documentstyle", "\\documentclass", text) # deal with 'documentstyle'
+    # deal with 'documentstyle'
+    text = re.sub(r"\\documentstyle", "\\documentclass", text)
+    re.sub(r"(?<!%)\\usepackage.*?\{epsfig}", "", text)
     if not re.search(r"(?<!%)\\usepackage.*?\{xcolor}", text):
         pack = re.search(r"(?<!%)\\documentclass.*?\{\w*?}", text)
         if pack:
             pack_pos = pack.span()
-            text = text[:pack_pos[1]] + "\n\\usepackage[svgnames]{xcolor}\n" + text[pack_pos[1]:]
+            text = text[:pack_pos[1]] \
+                + "\n\\usepackage[svgnames]{xcolor}\n" \
+                + text[pack_pos[1]:]
 
     text1 = text
     text2 = text
     write_nf = False
-    pattern = r'(?<!\\fcolorbox\{Red}  \{White}\{)(?<!\$|\\)\$(?!\$|\}).*?(?<!\\)\$'
-    formu =  re.search(pattern, text2, re.S)
+    pattern = r'(?<!\\fcolorbox\{Red}  \
+        \{White}\{)(?<!\$|\\)\$(?!\$|\}).*?(?<!\\)\$'
+    formu = re.search(pattern, text2, re.S)
     if formu:
         write_nf = True
     while formu:
         pos = formu.span()
-        text = text[:pos[0]] + "\\fcolorbox{Red}  {White}{" + text[pos[0]: pos[1]] + "}" + text[pos[1]:]
-        text1 = text1[:pos[0]] + "\\fcolorbox{White}{White}{" + text1[pos[0]: pos[1]] + "}" + text1[pos[1]:]
-        text2 = text2[:pos[0]] + "\\fcolorbox{Red}  {White}{ " + text2[pos[0] + 1: pos[1] - 1] + " }" + text2[pos[1]:]
-        formu =  re.search(pattern, text2, re.S)
-
+        text = text[:pos[0]] \
+            + "\\fcolorbox{Red}  {White}{" \
+            + text[pos[0]: pos[1]] + "}" + text[pos[1]:]
+        text1 = text1[:pos[0]] \
+            + "\\fcolorbox{White}{White}{" \
+            + text1[pos[0]: pos[1]] + "}" + text1[pos[1]:]
+        text2 = text2[:pos[0]] \
+            + "\\fcolorbox{Red}  {White}{ " \
+            + text2[pos[0] + 1: pos[1] - 1] + " }" \
+            + text2[pos[1]:]
+        formu = re.search(pattern, text2, re.S)
 
     with open(filename, mode='w') as fl:
         fl.write(text)
@@ -62,7 +74,7 @@ def tex_framed_tojpg(filen, den="200"):
     if write_nf:
         with open(filename_nf, mode='w') as fl_nf:
             fl_nf.write(text1)
-        
+
     # get pdfs
     pdfl = PDFLaTeX.from_texfile(filename)
     pdfl_nf = PDFLaTeX.from_texfile(filename_nf)
@@ -74,28 +86,29 @@ def tex_framed_tojpg(filen, den="200"):
         return
     except Exception as e:
         print(e)
-        
+
     if not os.path.isdir(filename_nosuf + "_images"):
         os.mkdir(filename_nosuf + "_images")
     os.chdir(filename_nosuf + "_images")
-    
 
     for pdffilename in [chsuf(filename, "pdf"), chsuf(filename_nf, "pdf")]:
         pdf_im = PyPDF2.PdfFileReader(open("..//" + pdffilename[0], "rb"))
-        npage = pdf_im.getNumPages() 
+        npage = pdf_im.getNumPages()
         print("Converting %d pages..." % npage)
         for p in range(npage):
             im = PythonMagick.Image()
             im.density(den)
             im.magick = "RGB"
-            im.read("..//" + pdffilename[0] + '[' + str(p) +']')
-            print("    Converting %d/%d of %s..." % (p+1, npage, pdffilename[1]))
-            im.write(pdffilename[1] + "-" + str(p)+ '.jpg')
+            im.read("..//" + pdffilename[0] + '[' + str(p) + ']')
+            print("    Converting %d/%d of %s..."
+                  % (p+1, npage, pdffilename[1]))
+            im.write(pdffilename[1] + "-" + str(p) + '.jpg')
 
     # os.remove(filename_nf)
     # os.remove(chsuf(filename, "pdf"))
     # os.remove(chsuf(filename_nf, "pdf"))
     os.chdir("..")
+
 
 def chsuf(filename, suf):
     nam_suf = re.search(r"\.", filename)
