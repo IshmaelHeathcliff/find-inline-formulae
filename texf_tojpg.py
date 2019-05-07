@@ -102,7 +102,7 @@ def tex_framed_tojpg(filen, den="200"):
             im.read("..//" + pdffilename[0] + '[' + str(p) + ']')
             print("    Converting %d/%d of %s..."
                   % (p+1, npage, pdffilename[1]))
-            im.write(pdffilename[1] + "-" + str(p) + '.jpg')
+            im.write(pdffilename[1] + "-" + str(p + 1) + '.jpg')
 
     # os.remove(filename_nf)
     # os.remove(chsuf(filename, "pdf"))
