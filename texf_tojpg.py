@@ -81,12 +81,11 @@ def tex_framed_tojpg(filen, den="200"):
     try:
         pdfl.create_pdf(keep_pdf_file=True)
         pdfl_nf.create_pdf(keep_pdf_file=True)
-    except FileNotFoundError as e:
-        print(e)
+    except FileNotFoundError:
+        print("Lack dependencies to get pdfs of %s." % filename)
         return
     except Exception as e:
         print(e)
-        return
 
     if not os.path.isdir(filename_nosuf + "_images"):
         os.mkdir(filename_nosuf + "_images")
@@ -99,11 +98,13 @@ def tex_framed_tojpg(filen, den="200"):
         for p in range(npage):
             im = PythonMagick.Image()
             im.density(den)
-            im.magick = "RGB"
             im.read("..//" + pdffilename[0] + '[' + str(p) + ']')
+            # im.defineValue("png", "bit-depth", "8")
+            im.defineValue("png", "format", "png24")
+            im.defineValue("png", "color-type", "2")
             print("    Converting %d/%d of %s..."
                   % (p+1, npage, pdffilename[1]))
-            im.write(pdffilename[1] + "-" + str(p + 1) + '.jpg')
+            im.write(pdffilename[1] + "-" + str(p + 1) + '.png')
 
     # os.remove(filename_nf)
     # os.remove(chsuf(filename, "pdf"))
