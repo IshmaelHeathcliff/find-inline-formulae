@@ -2,6 +2,7 @@ import sys
 import texf_tojpg
 import os
 
+
 def texf_tojpg_batch(filedir, den="200"):
     if not os.path.isdir(filedir):
         print("Need a dir with only tex files")
@@ -15,7 +16,8 @@ def texf_tojpg_batch(filedir, den="200"):
                 texf_tojpg.tex_framed_tojpg(name, den)
             except Exception as e:
                 print(e)
-        
+
+
 argn = len(sys.argv)
 if argn == 1:
     print("Need a dir with only tex files.")

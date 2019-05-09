@@ -81,11 +81,12 @@ def tex_framed_tojpg(filen, den="200"):
     try:
         pdfl.create_pdf(keep_pdf_file=True)
         pdfl_nf.create_pdf(keep_pdf_file=True)
-    except FileNotFoundError:
-        print("Lack dependencies to get pdfs of %s." % filename)
+    except FileNotFoundError as e:
+        print(e)
         return
     except Exception as e:
         print(e)
+        return
 
     if not os.path.isdir(filename_nosuf + "_images"):
         os.mkdir(filename_nosuf + "_images")
