@@ -70,7 +70,6 @@ def to_png(filen, den):
         im.write(im_flname + "-" + str(p + 1) + '.png')
 
     pdf.close()
-    os.remove(pdfname)
     # os.remove(filen_nf)
 
 
