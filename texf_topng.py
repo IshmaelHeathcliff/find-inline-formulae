@@ -37,24 +37,26 @@ def tex_framed_topng(filen, den="200"):
         with open(filen_nf, mode='w') as fl_nf:
             fl_nf.write(text1)
 
-    to_png(filen, den)
-    to_png(filen_nf, den)
-
-
-# generate pdf and convert into png
-def to_png(filen, den):
-    flname, ext = os.path.splitext(filen)
-    if not os.path.isdir(flname + "_images"):
-        os.mkdir(flname + "_images")
-    im_flname = flname + "_images//" + os.path.basename(flname)
     pdfl = PDFLaTeX.from_texfile(filen)
+    pdfl_nf = PDFLaTeX.from_texfile(filen_nf)
     try:
         pdfl.create_pdf(keep_pdf_file=True)
+        pdfl_nf.create_pdf(keep_pdf_file=True)
     except Exception as e:
         print(e)
         return
 
+    to_png(flname, den)
+    to_png(flname_nf, den)
+
+
+# generate pdf and convert into png
+def to_png(flname, den):
+    if not os.path.isdir(flname + "_images"):
+        os.mkdir(flname + "_images")
+    im_flname = flname + "_images//" + os.path.basename(flname)
     pdfname = os.path.basename(flname) + ".pdf"
+
     pdf = open(pdfname, "rb")
     pdf_im = PyPDF2.PdfFileReader(pdf)
     npage = pdf_im.getNumPages()
@@ -66,11 +68,10 @@ def to_png(filen, den):
         # im.defineValue("png", "bit-depth", "8")
         im.defineValue("png", "format", "png24")
         im.defineValue("png", "color-type", "2")
-        print("    Converting %d/%d of %s..." % (p+1, npage, filen))
+        print("    Converting %d/%d of %s..." % (p+1, npage, flname))
         im.write(im_flname + "-" + str(p + 1) + '.png')
 
     pdf.close()
-    # os.remove(filen_nf)
 
 
 def text_treatment(text):
