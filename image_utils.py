@@ -56,7 +56,7 @@ def crop_lines(im):
     lines = len(im_lines)
 
     heights = [im_lines[i][3] for i in range(lines)]
-    height_mean = np.sum(heights) / lines
+    height_mean = np.mean(heights)
     while(i < lines):
         if im_lines[i][3] > 1.25 * height_mean or \
                 im_lines[i][4] < 0.02 or \
@@ -92,12 +92,52 @@ def crop_words(im):
         blank_end.append(col)
 
     im_blanks = []
-    for i in range(len(word_start)):
-        word_mid = (word_end[i] + word_start[i]) // 2
-        word_width = word_end[i] - word_start[i]
-        im_lines.append([lines_index_start[i], lines_index_end[i],
-                         line_mid, line_height,
-                         im_sum[line_mid], im_quarter_sum[line_mid]])
+    for i in range(len(blank_start)):
+        blank_mid = (blank_start[i] + blank_end[i]) // 2
+        blank_width = blank_end[i] - blank_start[i]
+        im_blanks.append([blank_start[i], blank_end[i],
+                          blank_mid, blank_width])
+
+    wids = [im_blanks[i][3] for i in range(len(im_blanks))]
+    max_width_index = wids.index(max(wids))
+    large_blank = 0
+    if max_width_index == 0 or max_width_index == len(im_blanks) - 1:
+        large_blank = 1
+        wids[max_width_index] = 0
+    width_mean = np.mean(wids)
+    is_blank = np.where(wids > width_mean, wids, 0)
+
+    blank_wids = []
+    for i in range(len(is_blank)):
+        if is_blank[i] != 0:
+            blank_wids.append(is_blank[i])
+
+    is_blank = np.where(is_blank > 0, 1, 0)
+    if large_blank:
+        if im_blanks[max_width_index][3] > 1.5 * np.mean(blank_wids):
+            is_blank[max_width_index] = -1
+        else:
+            is_blank[max_width_index] = 1
+
+    im_words = []
+    if is_blank[0] == -1:
+        im_words.append(im_blanks[0][1])
+    else:
+        im_words.append(0)
+
+    for i in range(1, len(is_blank)):
+        if is_blank[i] == 1:
+            im_words.append(im_blanks[i][2])
+
+    if is_blank[-1] == -1:
+        im_words.append(im_blanks[-1][0])
+    else:
+        im_words.append(col)
+
+    for i in range(len(im_words) - 1):
+        word_im = im.crop((im_words[i], 0, im_words[i+1], lin))
+        word_im.save("word-" + str(i+1) + ".png")
+
     return
 
 
