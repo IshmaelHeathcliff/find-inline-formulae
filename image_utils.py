@@ -139,7 +139,7 @@ def crop_words(im):
         word_im = im.crop((im_words[i], 0, im_words[i + 1], lin))
         word_im.save("word-" + str(i + 1) + ".png")
 
-    return
+    return im_words
 
 
 def pad_goup_image(img, output_path, pad_size, buckets):
