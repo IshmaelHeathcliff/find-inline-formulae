@@ -3,6 +3,7 @@ import os
 import PyPDF2
 import PythonMagick
 from pdflatex import PDFLaTeX
+import image_utils as iu
 
 
 def tex_framed_topng(filen, den="200"):
@@ -13,14 +14,17 @@ def tex_framed_topng(filen, den="200"):
 
     # filen: name with dir and ext
     # filename: name with ext
-    # flname: dir with name but no ext
+    # flname: name but no ext
+    ROOT = os.path.abspath('./')
     filedir, filename = os.path.split(filen)
-    flname, ext = os.path.splitext(filen)
+    flname, ext = os.path.splitext(filename)
+    if filedir != '':
+        os.chdir(filedir)
+
     # nf is 'no frame'
     flname_nf = flname + "_nf"
-    filen_nf = flname_nf + ext
 
-    with open(filen, mode='r') as fl:
+    with open(flname, mode='r') as fl:
         try:
             text = fl.read()
         except Exception as e:
@@ -30,15 +34,15 @@ def tex_framed_topng(filen, den="200"):
     # deal with text
     text, text1, write_nf = text_treatment(text)
 
-    with open(filen, mode='w') as fl:
+    with open(flname, mode='w') as fl:
         fl.write(text)
 
     if write_nf:
-        with open(filen_nf, mode='w') as fl_nf:
+        with open(flname_nf, mode='w') as fl_nf:
             fl_nf.write(text1)
 
-    pdfl = PDFLaTeX.from_texfile(filen)
-    pdfl_nf = PDFLaTeX.from_texfile(filen_nf)
+    pdfl = PDFLaTeX.from_texfile(flname)
+    pdfl_nf = PDFLaTeX.from_texfile(flname_nf)
     try:
         pdfl.create_pdf(keep_pdf_file=True)
         pdfl_nf.create_pdf(keep_pdf_file=True)
@@ -46,16 +50,20 @@ def tex_framed_topng(filen, den="200"):
         print(e)
         return
 
+    if not os.path.isdir(flname + "_images"):
+        os.mkdir(flname + "_images")
+        os.mkdir(flname + "_images/nf")
+        os.mkdir(flname + "_images/hf")
+    os.chdir(flname + "_images/hf")
     to_png(flname, den)
+    os.chdir("../nf")
     to_png(flname_nf, den)
+    os.chdir(ROOT)
 
 
 # generate pdf and convert into png
-def to_png(flname, den):
-    if not os.path.isdir(flname + "_images"):
-        os.mkdir(flname + "_images")
-    im_flname = flname + "_images//" + os.path.basename(flname)
-    pdfname = os.path.basename(flname) + ".pdf"
+def to_png(name, den):
+    pdfname = "../../" + name + ".pdf"
 
     pdf = open(pdfname, "rb")
     pdf_im = PyPDF2.PdfFileReader(pdf)
@@ -68,8 +76,9 @@ def to_png(flname, den):
         # im.defineValue("png", "bit-depth", "8")
         im.defineValue("png", "format", "png24")
         im.defineValue("png", "color-type", "2")
-        print("    Converting %d/%d of %s..." % (p+1, npage, flname))
-        im.write(im_flname + "-" + str(p + 1) + '.png')
+        print("    Converting %d/%d of %s..." % (p+1, npage, name))
+        im.write(str(p + 1) + '.png')
+        iu.crop_border(str(p + 1) + '.png')
 
     pdf.close()
 
