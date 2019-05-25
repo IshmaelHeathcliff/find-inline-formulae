@@ -54,16 +54,24 @@ def tex_framed_topng(filen, den="200"):
         os.mkdir(flname + "_images")
         os.mkdir(flname + "_images/nf")
         os.mkdir(flname + "_images/hf")
+
     os.chdir(flname + "_images/hf")
-    to_png(flname, den)
+    no_frame_pngs = to_png(flname, den)
     os.chdir("../nf")
     to_png(flname_nf, den)
+    os.chdir('../')
+
+    for png in no_frame_pngs:
+        os.remove('hf/' + png)
+        os.remove('nf/' + png)
+
     os.chdir(ROOT)
 
 
 # generate pdf and convert into png
 def to_png(name, den):
     pdfname = "../../" + name + ".pdf"
+    no_frame_pngs = []
 
     pdf = open(pdfname, "rb")
     pdf_im = PyPDF2.PdfFileReader(pdf)
@@ -77,10 +85,15 @@ def to_png(name, den):
         im.defineValue("png", "format", "png24")
         im.defineValue("png", "color-type", "2")
         print("    Converting %d/%d of %s..." % (p+1, npage, name))
-        im.write(str(p + 1) + '.png')
-        iu.crop_border(str(p + 1) + '.png')
+        pngname = str(p + 1) + '.png'
+        im.write(pngname)
+        iu.crop_border(pngname)
+        if not iu.has_red_frame(pngname):
+            no_frame_pngs.append(pngname)
 
     pdf.close()
+
+    return no_frame_pngs
 
 
 def text_treatment(text):
