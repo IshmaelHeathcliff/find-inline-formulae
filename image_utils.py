@@ -3,21 +3,13 @@ from PIL import Image
 import numpy as np
 
 
-def crop_border(img, default_size=None):
+def crop_border(img):
     im = Image.open(img)
     old_im = im.convert('L')
     img_data = np.asarray(old_im, dtype=np.uint8)  # height, width
     nnz_inds = np.where(img_data != 255)
     if len(nnz_inds[0]) == 0:
-        if not default_size:
-            old_im.save(output_path)
-            return False
-        else:
-            assert len(default_size) == 2, default_size
-            x_min, y_min, x_max, y_max = 0, 0, default_size[0], default_size[1]
-            old_im = old_im.crop((x_min, y_min, x_max + 1, y_max + 1))
-            old_im.save(output_path)
-            return False
+        return (0, 0)
     y_min = np.min(nnz_inds[0])
     y_max = np.max(nnz_inds[0])
     x_min = np.min(nnz_inds[1])
@@ -48,7 +40,6 @@ def formu_labels(img_hf, im_lines, im_lines_words):
     im_labels = []
     for i in range(len(im_lines)):
         im_labels.append([])
-        print(im_lines[i][2])
         line = im_data[im_lines[i][2]]
         red = line[:, 0]
         green = line[:, 1]
@@ -69,7 +60,7 @@ def formu_labels(img_hf, im_lines, im_lines_words):
     return im_labels
 
 
-def crop_lines(im):
+def crop_lines(im, save_line_im=False):
     col, lin = im.size
     im_data = np.asarray(im)
     im_quarter_data = np.asarray(im.crop((0, 0, col // 4, lin)))
@@ -90,11 +81,13 @@ def crop_lines(im):
 
     im_lines = []
     for i in range(len(lines_index_start)):
-        line_mid = (lines_index_end[i] + lines_index_start[i]) // 2
-        line_height = lines_index_end[i] - lines_index_start[i]
+        line_start = lines_index_start[i]
+        line_end = lines_index_end[i]
+        line_mid = (line_start + line_end) // 2
+        line_height = line_end - line_start
         im_lines.append([
             lines_index_start[i], lines_index_end[i], line_mid, line_height,
-            im_sum[line_mid], im_quarter_sum[line_mid]
+            im_sum[line_mid], im_quarter_sum[line_mid], im_sum[line_start], im_sum[line_end - 1]
         ])
     i = 0
     lines = len(im_lines)
@@ -104,16 +97,30 @@ def crop_lines(im):
     height_up = np.percentile(heights, 90)
     while (i < lines):
         if im_lines[i][3] > height_up * 1.25 or \
-                im_lines[i][3] < height_down * 0.5 or \
-                im_lines[i][4] < 0.02 or \
-                im_lines[i][5] < 0.02:
+                im_lines[i][3] < height_down * 0.9 or \
+                (im_lines[i][4] < 0.15 and im_lines[i][5] < 0.15) or \
+                im_lines[i][4] > 0.8 or \
+                im_lines[i][6] > 0.8 or \
+                im_lines[i][7] > 0.8 or \
+                im_lines[i][5] > 0.8:
             del im_lines[i]
             lines -= 1
             continue
         i += 1
 
+    if save_line_im:
+        for i in range(len(im_lines)):
+            line_im = im.crop((0, im_lines[i][0], col, im_lines[i][1]))
+            line_im.save('line-' + str(i) + '.png')
+
+    return im_lines
+
+
+def crop_lines_words(im):
+    col, lin = im.size
     lines_words = []
     im_lines_words = []
+    im_lines = crop_lines(im)
     for i in range(len(im_lines)):
         line_im = im.crop((0, im_lines[i][0], col, im_lines[i][1]))
         im_words, words = crop_words(line_im)
@@ -125,7 +132,7 @@ def crop_lines(im):
     return im_lines, im_lines_words, lines_words
 
 
-def crop_words(im):
+def crop_words(im, save_words=False):
     col, lin = im.size
     im_data = np.asarray(im)
     im_reverse = np.where(im_data != 255, 1., 0.)
@@ -151,12 +158,13 @@ def crop_words(im):
 
     # 找出非字母间隔的空白
     wids = np.asarray([im_blanks[i][2] for i in range(len(im_blanks))])
-    up_wid = np.percentile(wids, 95)
+    up_wid = np.percentile(wids, 90)
     wid_inds = np.where(wids < up_wid)[0]
     wid_mean = 0
-    for i in range(len(wid_inds)):
-        wid_mean += wids[wid_inds[i]]
-    wid_mean = wid_mean / len(wid_inds)
+    if len(wid_inds) != 0:
+        for i in range(len(wid_inds)):
+            wid_mean += wids[wid_inds[i]]
+        wid_mean = wid_mean / len(wid_inds)
     is_blank = np.where(wids > wid_mean, 1, 0)
 
     i = 0
@@ -171,8 +179,13 @@ def crop_words(im):
             i += 1
 
     im_words = []
-    if not im_blanks[0][0] == 0:
-        im_words.append([0, im_blanks[0][0]])
+    try:
+        if im_blanks[0][0] != 0:
+            im_words.append([0, im_blanks[0][0]])
+    except Exception as e:
+        print(im_blanks)
+        im.save('error.png')
+        raise e
     for i in range(len(im_blanks) - 1):
         im_words.append([im_blanks[i][1], im_blanks[i + 1][0]])
     if im_blanks[-1][1] != col:
@@ -181,6 +194,8 @@ def crop_words(im):
     words = []
     for i in range(len(im_words)):
         word_im = im.crop((im_words[i][0], 0, im_words[i][1], lin))
+        if save_words == True:
+            word_im.save("word-" + str(i) + ".png")
         words.append(word_im)
 
     return im_words, words
