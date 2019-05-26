@@ -43,22 +43,30 @@ def has_red_frame(img):
         return True
 
 
-def formu_labels(img_hf, im_lines, im_words):
+def formu_labels(img_hf, im_lines, im_lines_words):
     im_data = np.asarray(Image.open(img_hf))
     im_labels = []
     for i in range(len(im_lines)):
-        for j in range(len(im_words[i])):
-            line = im_data[im_lines[2]]
-            red = line[:, :, 0]
-            green = line[:, :, 1]
-            blue = line[:, :, 2]
-            is_red = np.where(red == 255, 1, 0)
-            not_green = np.where(green == 0, 1, 0)
-            not_blue = np.where(blue == 0, 1, 0)
-            has_red = is_red + not_blue + not_green
-            red = np.sum(np.where(has_red == 3))
+        im_labels.append([])
+        print(im_lines[i][2])
+        line = im_data[im_lines[i][2]]
+        red = line[:, 0]
+        green = line[:, 1]
+        blue = line[:, 2]
+        is_red = np.where(red == 255, 1, 0)
+        not_green = np.where(green == 0, 1, 0)
+        not_blue = np.where(blue == 0, 1, 0)
+        has_red = is_red + not_blue + not_green
+        red_inds = np.where(has_red == 3)[0]
+        for j in range(len(im_lines_words[i])):
+            for k in range(len(red_inds) // 2):
+                if im_lines_words[i][j][0] > red_inds[k] and im_lines_words[i][
+                        j][1] < red_inds[k + 1]:
+                    im_labels[i].append(1)
+                    break
+            im_labels[i].append(0)
 
-    return
+    return im_labels
 
 
 def crop_lines(im):
@@ -104,13 +112,17 @@ def crop_lines(im):
             continue
         i += 1
 
+    lines_words = []
+    im_lines_words = []
     for i in range(len(im_lines)):
         line_im = im.crop((0, im_lines[i][0], col, im_lines[i][1]))
-        line_im.save("line-" + str(i) + ".png")
+        im_words, words = crop_words(line_im)
+        im_lines_words.append(im_words)
+        lines_words.append(words)
 
-    im_lines = np.asarray(im_lines)[:, 0:3]
+    im_lines = [x[0:3] for x in im_lines]
 
-    return im_lines
+    return im_lines, im_lines_words, lines_words
 
 
 def crop_words(im):
@@ -138,8 +150,8 @@ def crop_words(im):
         im_blanks.append([blank_start[i], blank_end[i], blank_width])
 
     # 找出非字母间隔的空白
-    wids = [im_blanks[i][2] for i in range(len(im_blanks))]
-    up_wid = np.percentile(wids, 90)
+    wids = np.asarray([im_blanks[i][2] for i in range(len(im_blanks))])
+    up_wid = np.percentile(wids, 95)
     wid_inds = np.where(wids < up_wid)[0]
     wid_mean = 0
     for i in range(len(wid_inds)):
@@ -149,9 +161,11 @@ def crop_words(im):
 
     i = 0
     up = len(im_blanks)
+    is_blank = list(is_blank)
     while i < up:
         if is_blank[i] == 0:
             del im_blanks[i]
+            del is_blank[i]
             up -= 1
         else:
             i += 1
@@ -159,16 +173,17 @@ def crop_words(im):
     im_words = []
     if not im_blanks[0][0] == 0:
         im_words.append([0, im_blanks[0][0]])
-    for i in range(len(is_blank) - 1):
+    for i in range(len(im_blanks) - 1):
         im_words.append([im_blanks[i][1], im_blanks[i + 1][0]])
     if im_blanks[-1][1] != col:
         im_words.append([im_blanks[-1][1], col])
 
+    words = []
     for i in range(len(im_words)):
         word_im = im.crop((im_words[i][0], 0, im_words[i][1], lin))
-        word_im.save("word-" + str(i + 1) + ".png")
+        words.append(word_im)
 
-    return im_words
+    return im_words, words
 
 
 def pad_goup_image(img, output_path, pad_size, buckets):
