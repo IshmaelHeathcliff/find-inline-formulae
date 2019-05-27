@@ -1,6 +1,7 @@
 import PIL
 from PIL import Image
 import numpy as np
+import math
 
 
 def crop_border(img):
@@ -158,13 +159,8 @@ def crop_words(im, save_words=False):
 
     # 找出非字母间隔的空白
     wids = np.asarray([im_blanks[i][2] for i in range(len(im_blanks))])
-    up_wid = np.percentile(wids, 90)
-    wid_inds = np.where(wids < up_wid)[0]
-    wid_mean = 0
-    if len(wid_inds) != 0:
-        for i in range(len(wid_inds)):
-            wid_mean += wids[wid_inds[i]]
-        wid_mean = wid_mean / len(wid_inds)
+    wid_mean, std = min_square(wids)
+    wid_mean = wid_mean + 0.2 * std
     is_blank = np.where(wids > wid_mean, 1, 0)
 
     i = 0
@@ -201,37 +197,15 @@ def crop_words(im, save_words=False):
     return im_words, words
 
 
-def pad_goup_image(img, output_path, pad_size, buckets):
-    PAD_TOP, PAD_LEFT, PAD_BOTTOM, PAD_RIGHT = pad_size
-    old_im = Image.open(img)
-    old_size = (old_im.size[0] + PAD_LEFT + PAD_RIGHT,
-                old_im.size[1] + PAD_TOP + PAD_BOTTOM)
-    j = -1
-    for i in range(len(buckets)):
-        if old_size[0] <= buckets[i][0] and old_size[1] <= buckets[i][1]:
-            j = i
-            break
-    if j < 0:
-        new_size = old_size
-        new_im = Image.new("RGB", new_size, (255, 255, 255))
-        new_im.paste(old_im, (PAD_LEFT, PAD_TOP))
-        new_im.save(output_path)
-        return False
-    new_size = buckets[j]
-    new_im = Image.new("RGB", new_size, (255, 255, 255))
-    new_im.paste(old_im, (PAD_LEFT, PAD_TOP))
-    new_im.save(output_path)
-    return True
+def min_square(lis):
+    num = len(lis)
+    lis = np.asarray(lis)
+    mi, ma = np.min(lis), np.max(lis)
+    out_lis = []
+    for i in range(ma - mi):
+        sq = np.sum((lis - mi)**2)
+        out_lis.append(math.sqrt(sq / num))
+        mi += 1
+    out = out_lis.index(min(out_lis))
+    return out, out_lis[out]
 
-
-def downsample_image(img, output_path, ratio):
-    assert ratio >= 1, ratio
-    if ratio == 1:
-        return True
-    old_im = Image.open(img)
-    old_size = old_im.size
-    new_size = (int(old_size[0] / ratio), int(old_size[1] / ratio))
-
-    new_im = old_im.resize(new_size, PIL.Image.LANCZOS)
-    new_im.save(output_path)
-    return True

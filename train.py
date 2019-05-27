@@ -4,7 +4,10 @@ import os
 import numpy as np
 import random
 
-INPUT_PATH = 'Images.npy'
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
+
+INPUT_PATH = 'train.tfrecords'
+DATA_NUM = 50
 LEARNING_RATE_BASE = 0.01
 LEARNING_RATE_DECAY = 0.99
 REGULARIZATION_RATE = 0.0001
@@ -12,11 +15,12 @@ TRAINING_STEPS = 500
 MOVING_AVERAGE_DECAY = 0.99
 
 
-def train(data):
-    # data = [[[word, ...], [label, ...]], ...]
+
+def train(filename):
+
     # 定义输出为4维矩阵的placeholder
-    print(len(data))
-    x_train, y_train = shuffle_data(data)
+    x_train, y_train = get_data(filename)
+    print(x_train.get_shape())
     x = tf.placeholder(tf.float32, (1, x_train.get_shape()[0], x_train.get_shape()[1], 1), name='x-input')
     y_ = tf.placeholder(tf.float32, (1, 1), name='y-input')
 
@@ -34,7 +38,7 @@ def train(data):
     loss = cross_entropy_mean + tf.add_n(tf.get_collection('losses'))
     learning_rate = tf.train.exponential_decay(LEARNING_RATE_BASE,
                                             global_step,
-                                            len(data),
+                                            DATA_NUM,
                                             LEARNING_RATE_DECAY,
                                             staircase=True)
 
@@ -59,31 +63,24 @@ def train(data):
                     % (step, loss_value))
 
 
-def data_process(datapath):
-    database = np.load(datapath, allow_pickle=True)
-    data = database[:, 2:4].tolist()
-    for i in range(len(data)):
-        data[i][0] = flat2d(data[i][0])
-        data[i][1] = flat2d(data[i][1])
-    return data
+def get_data(filename):
+    filename_queue = tf.train.string_input_producer([filename])
+    reader = tf.TFRecordReader()
+    _, serialized_example = reader.read(filename_queue)
 
+    features = tf.parse_single_example(serialized_example,
+      features={
+      'label': tf.FixedLenFeature([], tf.int64),
+      'img' : tf.FixedLenFeature([], tf.string)})
+    
+    img = tf.decode_raw(features['img'], tf.uint8)
+    label = tf.cast(features['label'], tf.int32)
+    
+    return img, label
 
-def flat2d(lis):
-    out_lis = lis[0]
-    for i in range(1, len(lis)):
-        out_lis.extend(lis[i])
-    return out_lis
-
-
-def shuffle_data(data):
-    ind1 = random.randint(0, len(data) - 1)
-    ind2 = random.randint(0, len(data[ind1][0]) - 1)
-    x, y = data[ind1][0][ind2], data[ind1][1][ind2]
-    return tf.convert_to_tensor(data[ind1][0][ind2]), tf.convert_to_tensor(data[ind1][1][ind2])
 
 def main(argv=None):
-    data = data_process(INPUT_PATH)
-    train(data)
+    train(INPUT_PATH)
 
 
 if __name__ == '__main__':
