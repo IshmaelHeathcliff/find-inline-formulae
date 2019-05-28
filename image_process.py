@@ -39,20 +39,28 @@ def image_words_prep(IMG_DIR):
         nfs = [x[2] for x in os.walk('nf/')][0]
         for nf in nfs:
             nf_im = Image.open('nf/' + nf).convert("L")
+            hf_im = Image.open('hf/' + nf)
             try:
-                im_lines, im_lines_words, lines_words = iu.crop_lines_words(nf_im)
-                im_labels = iu.formu_labels('hf/' + nf, im_lines, im_lines_words)
+                im_lines, im_lines_words, lines_words, rotated = iu.crop_lines_words(nf_im)
+                if rotated == True:
+                    hf_im = hf_im.rotate(-90, expand=True)
+                if len(lines_words) != 0:
+                    im_labels = iu.formu_labels(hf_im, im_lines, im_lines_words)
+                    lines_words = flat2d(lines_words)
+                    im_labels = flat2d(im_labels)
+                    lines_words, im_labels = over_sampling(lines_words, im_labels)
+                else:
+                    continue
             except Exception as e:
                 print(di + nf)
                 raise e
-            lines_words = flat2d(lines_words)
-            im_labels = flat2d(im_labels)
             height = [x.size[1] for x in lines_words]
             width = [x.size[0] for x in lines_words]
             images.extend(lines_words)
             labels.extend(im_labels)
             heights.extend(height)
             widths.extend(width)
+        os.chdir('../')
     
     writer = tf.python_io.TFRecordWriter(OUT_PATH)
     for i in range(len(images)):
@@ -65,6 +73,29 @@ def image_words_prep(IMG_DIR):
         writer.write(example.SerializeToString())
     writer.close() 
     os.chdir('../')
+
+def over_sampling(words, labels):
+    class0 = []
+    class1 = []
+    for i in range(len(labels)):
+        if labels[i] == 0:
+            class0.append((words[i], 0))
+        elif labels[i] == 1:
+            class1.append((words[i], 1))
+    
+    if len(class1) == 0:
+        return words, labels
+    cout = len(class0) // len(class1)
+    class1_init = class1[:]
+    for i in range(cout):
+        class1.extend(class1_init)
+
+    class0.extend(class1)
+    np.random.shuffle(class0)
+    words = [x[0] for x in class0]
+    labels = [x[1] for x in class0]
+    return words, labels
+    
 
 
 image_words_prep(TEST_IMG_DIR)

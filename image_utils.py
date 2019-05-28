@@ -36,8 +36,8 @@ def has_red_frame(img):
         return True
 
 
-def formu_labels(img_hf, im_lines, im_lines_words):
-    im_data = np.asarray(Image.open(img_hf))
+def formu_labels(hf_im, im_lines, im_lines_words):
+    im_data = np.asarray(hf_im)
     im_labels = []
     for i in range(len(im_lines)):
         im_labels.append([])
@@ -46,17 +46,27 @@ def formu_labels(img_hf, im_lines, im_lines_words):
         green = line[:, 1]
         blue = line[:, 2]
         is_red = np.where(red == 255, 1, 0)
-        not_green = np.where(green == 0, 1, 0)
-        not_blue = np.where(blue == 0, 1, 0)
+        not_green = np.where(green < 255, 1, 0)
+        not_blue = np.where(blue < 255, 1, 0)
         has_red = is_red + not_blue + not_green
-        red_inds = np.where(has_red == 3)[0]
+        red_inds = []
+        for k in range(len(has_red) - 1):
+            if has_red[k] == 3 and has_red[k+1] != 3:
+                red_inds.append(k)
+        if has_red[-1] == 3 and has_red[-2] != 3:
+            red_inds.append(len(has_red) - 1)
+
         for j in range(len(im_lines_words[i])):
+            cont = False
             for k in range(len(red_inds) // 2):
-                if im_lines_words[i][j][0] > red_inds[k] and im_lines_words[i][
-                        j][1] < red_inds[k + 1]:
+                if im_lines_words[i][j][0] > red_inds[k] and im_lines_words[i][j][1] < red_inds[k + 1]:
                     im_labels[i].append(1)
+                    cont = True
                     break
-            im_labels[i].append(0)
+            if cont == True:
+                continue
+            else:
+                im_labels[i].append(0)
 
     return im_labels
 
@@ -64,11 +74,25 @@ def formu_labels(img_hf, im_lines, im_lines_words):
 def crop_lines(im, save_line_im=False):
     col, lin = im.size
     im_data = np.asarray(im)
-    im_quarter_data = np.asarray(im.crop((0, 0, col // 4, lin)))
-    im_reverse = np.where(im_data != 255, 1 / col, 0.)
-    im_quarter_reverse = np.where(im_quarter_data != 255, 1 / (col // 4), 0.)
+    im_reverse = np.where(im_data != 255, 1., 0.)
 
-    im_sum = np.sum(im_reverse, axis=1)
+    # 处理图像方向
+    rotated = False
+    im_sum_x = np.sum(im_reverse, axis=1)
+    im_sum_y = np.sum(im_reverse, axis=0)
+    im_blank_x = np.sum(np.where(im_sum_x == 0, 1, 0)) / lin
+    im_blank_y = np.sum(np.where(im_sum_y == 0, 1, 0)) / col
+    if im_blank_y > im_blank_x:
+        im_data = np.rot90(im_data, -1)
+        im = Image.fromarray(im_data)
+        im_sum = im_sum_y / lin
+        lin, col = im_data.shape
+        rotated = True
+    else:
+        im_sum = im_sum_x / col
+
+    im_quarter_data = im_data[:, 0:(col // 4)]
+    im_quarter_reverse = np.where(im_quarter_data != 255, 1 / (col // 4), 0.)
     im_quarter_sum = np.sum(im_quarter_reverse, axis=1)
 
     lines_index_start = [0]
@@ -114,14 +138,14 @@ def crop_lines(im, save_line_im=False):
             line_im = im.crop((0, im_lines[i][0], col, im_lines[i][1]))
             line_im.save('line-' + str(i) + '.png')
 
-    return im_lines
+    return im_lines, rotated
 
 
 def crop_lines_words(im):
     col, lin = im.size
     lines_words = []
     im_lines_words = []
-    im_lines = crop_lines(im)
+    im_lines, rotated = crop_lines(im)
     for i in range(len(im_lines)):
         line_im = im.crop((0, im_lines[i][0], col, im_lines[i][1]))
         im_words, words = crop_words(line_im)
@@ -130,7 +154,7 @@ def crop_lines_words(im):
 
     im_lines = [x[0:3] for x in im_lines]
 
-    return im_lines, im_lines_words, lines_words
+    return im_lines, im_lines_words, lines_words, rotated
 
 
 def crop_words(im, save_words=False):
@@ -160,7 +184,7 @@ def crop_words(im, save_words=False):
     # 找出非字母间隔的空白
     wids = np.asarray([im_blanks[i][2] for i in range(len(im_blanks))])
     wid_mean, std = min_square(wids)
-    wid_mean = wid_mean + 0.2 * std
+    # wid_mean = wid_mean + 0.2 * std
     is_blank = np.where(wids > wid_mean, 1, 0)
 
     i = 0

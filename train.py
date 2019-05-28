@@ -3,15 +3,16 @@ import inference
 import os
 import numpy as np
 import random
+import math
 
-os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
 
-INPUT_PATH = 'train.tfrecords'
+INPUT_PATH = 'test/train.tfrecords'
 DATA_NUM = 50
 LEARNING_RATE_BASE = 0.01
 LEARNING_RATE_DECAY = 0.99
 REGULARIZATION_RATE = 0.0001
-TRAINING_STEPS = 500
+TRAINING_STEPS = 20
 MOVING_AVERAGE_DECAY = 0.99
 
 
@@ -20,30 +21,29 @@ def train(filename):
 
     # 定义输出为4维矩阵的placeholder
     x_train, y_train = get_data(filename)
-    print(x_train.get_shape())
     x = tf.placeholder(tf.float32, (1, x_train.get_shape()[0], x_train.get_shape()[1], 1), name='x-input')
     y_ = tf.placeholder(tf.float32, (1, 1), name='y-input')
 
     regularizer = tf.contrib.layers.l2_regularizer(REGULARIZATION_RATE)
-    y = inference.inference(x, False, regularizer)
+    y, spp, relu = inference.inference(x, False, regularizer)
     global_step = tf.Variable(0, trainable=False)
 
     # 定义损失函数、学习率、滑动平均操作以及训练过程。
     variable_averages = tf.train.ExponentialMovingAverage(
         MOVING_AVERAGE_DECAY, global_step)
     variables_averages_op = variable_averages.apply(tf.trainable_variables())
-    cross_entropy = tf.nn.sparse_softmax_cross_entropy_with_logits(
-        logits=y, labels=tf.cast(tf.reshape(y_, (1,)), tf.int32))
+    cross_entropy = tf.nn.sigmoid_cross_entropy_with_logits(
+        logits=y, labels=y_)
     cross_entropy_mean = tf.reduce_mean(cross_entropy)
-    loss = cross_entropy_mean + tf.add_n(tf.get_collection('losses'))
+    regularization = tf.add_n(tf.get_collection('losses'))
+    loss = cross_entropy_mean + regularization
     learning_rate = tf.train.exponential_decay(LEARNING_RATE_BASE,
                                             global_step,
                                             DATA_NUM,
                                             LEARNING_RATE_DECAY,
                                             staircase=True)
 
-    train_step = tf.train.GradientDescentOptimizer(learning_rate).minimize(
-        loss, global_step=global_step)
+    train_step = tf.train.GradientDescentOptimizer(learning_rate).minimize(loss, global_step=global_step)
     with tf.control_dependencies([train_step, variables_averages_op]):
         train_op = tf.no_op(name='train')
 
@@ -51,16 +51,24 @@ def train(filename):
     saver = tf.train.Saver()
     with tf.Session() as sess:
         tf.global_variables_initializer().run()
+        coord = tf.train.Coordinator()
+        threads = tf.train.start_queue_runners(sess=sess, coord=coord)
         for i in range(TRAINING_STEPS):
-            xs, ys = sess.run([x_train, y_train])
-            xs = np.reshape(xs, (1, xs.shape[0], xs.shape[1], 1))
-            ys = np.reshape(ys, (1, 1))
+            xi, yi = sess.run([x_train, y_train])
+            h, w = xi.shape
+            xs = np.reshape(xi, (1, h, w, 1))
+            ys = np.reshape(yi, (1, 1))
+            yo = sess.run(y, feed_dict={x: xs, y_: ys})
             _, loss_value, step = sess.run([train_op, loss, global_step], feed_dict={x: xs, y_: ys})
 
-            if i % 10 == 0:
+            if i % 1 == 0:
                 print(
                     "After %d training step(s), loss on training batch is %g."
                     % (step, loss_value))
+                print('y, y_, regularization:', sigmoid(yo[0, 0]), yi)
+
+        coord.request_stop()
+        coord.join(threads)
 
 
 def get_data(filename):
@@ -69,14 +77,22 @@ def get_data(filename):
     _, serialized_example = reader.read(filename_queue)
 
     features = tf.parse_single_example(serialized_example,
-      features={
-      'label': tf.FixedLenFeature([], tf.int64),
-      'img' : tf.FixedLenFeature([], tf.string)})
+                                       features={
+                                       'label': tf.FixedLenFeature([], tf.int64),
+                                       'height': tf.FixedLenFeature([], tf.int64),
+                                       'width': tf.FixedLenFeature([], tf.int64),
+                                       'img' : tf.FixedLenFeature([], tf.string)})
     
     img = tf.decode_raw(features['img'], tf.uint8)
     label = tf.cast(features['label'], tf.int32)
+    height = features['height']
+    width = features['width']
+    img = tf.reshape(img, (height, width))
     
     return img, label
+
+def sigmoid(x):
+    return 1 / (1 + math.exp(-x))
 
 
 def main(argv=None):

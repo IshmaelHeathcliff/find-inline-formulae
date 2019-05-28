@@ -4,16 +4,16 @@ import math
 OUTPUT_NODE = 2
 
 NUM_CHANNELS = 1
-NUM_LABELS = 2
+NUM_LABELS = 1
 
-CONV1_DEEP = 32
+CONV1_DEEP = 64
 CONV1_SIZE = 3
 
-CONV2_DEEP = 64
+CONV2_DEEP = 128
 CONV2_SIZE = 3
 
-BINS = [3, 2, 1]
-FC_SIZE = 14 * 64
+BINS = [4, 2, 1]
+FC_SIZE = 21 * 128
 
 
 def inference(input_tensor, train, regularizer):
@@ -29,22 +29,25 @@ def inference(input_tensor, train, regularizer):
                              padding='SAME')
         relu1 = tf.nn.relu(tf.nn.bias_add(conv1, conv1_biases))
 
-    with tf.variable_scope("layer2-conv2"):
+    with tf.variable_scope('layer4-spp'):
+        pool1 = tf.nn.max_pool(relu1, ksize=(1,2,2,1), strides=(1,2,2,1), padding='VALID')
+
+    with tf.variable_scope("layer3-conv2"):
         conv2_weights = tf.get_variable(
             "weight", [CONV2_SIZE, CONV2_SIZE, CONV1_DEEP, CONV2_DEEP],
             initializer=tf.truncated_normal_initializer(stddev=0.1))
         conv2_biases = tf.get_variable(
             "bias", [CONV2_DEEP], initializer=tf.constant_initializer(0.0))
-        conv2 = tf.nn.conv2d(conv1,
+        conv2 = tf.nn.conv2d(pool1,
                              conv2_weights,
                              strides=[1, 1, 1, 1],
                              padding='SAME')
         relu2 = tf.nn.relu(tf.nn.bias_add(conv2, conv2_biases))
 
-    with tf.variable_scope('layer3-spp'):
+    with tf.variable_scope('layer4-spp'):
         spp = Spp_layer(relu2, BINS)
 
-    with tf.variable_scope('layer4-fc'):
+    with tf.variable_scope('layer5-fc'):
         fc_weights = tf.get_variable(
             "weight", [FC_SIZE, NUM_LABELS],
             initializer=tf.truncated_normal_initializer(stddev=0.1))
@@ -54,11 +57,11 @@ def inference(input_tensor, train, regularizer):
                                     initializer=tf.constant_initializer(0.1))
         logit = tf.matmul(spp, fc_weights) + fc_biases
 
-    return logit
+    return logit, spp, relu2
 
 
 def Spp_layer(feature_map, bins):
-    batch_size, x, y, _ = feature_map.get_shape().as_list()
+    batch_size, x, y, _ = tf.shape(feature_map)
     pooling_out_all = []
     print("shape of pool2:", x, y)
 
