@@ -1,4 +1,7 @@
 20*
 __pycache__
 test*
-/refs
+refs/
+primal/
+.vscode/
+.vscode/**

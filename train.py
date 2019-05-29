@@ -8,11 +8,13 @@ import math
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
 
 INPUT_PATH = 'test/train.tfrecords'
+INPUT_SIZE = 50
+BATCH_SIZE = 5
 DATA_NUM = 50
 LEARNING_RATE_BASE = 0.01
 LEARNING_RATE_DECAY = 0.99
 REGULARIZATION_RATE = 0.0001
-TRAINING_STEPS = 20
+TRAINING_STEPS = 1000
 MOVING_AVERAGE_DECAY = 0.99
 
 
@@ -21,11 +23,11 @@ def train(filename):
 
     # 定义输出为4维矩阵的placeholder
     x_train, y_train = get_data(filename)
-    x = tf.placeholder(tf.float32, (1, x_train.get_shape()[0], x_train.get_shape()[1], 1), name='x-input')
-    y_ = tf.placeholder(tf.float32, (1, 1), name='y-input')
+    x = tf.placeholder(tf.float32, [BATCH_SIZE, INPUT_SIZE, INPUT_SIZE, 1], name='x-input')
+    y_ = tf.placeholder(tf.float32, [BATCH_SIZE, 1], name='y-input')
 
     regularizer = tf.contrib.layers.l2_regularizer(REGULARIZATION_RATE)
-    y, spp, relu = inference.inference(x, False, regularizer)
+    y = inference.inference(x, False, regularizer)
     global_step = tf.Variable(0, trainable=False)
 
     # 定义损失函数、学习率、滑动平均操作以及训练过程。
@@ -55,17 +57,15 @@ def train(filename):
         threads = tf.train.start_queue_runners(sess=sess, coord=coord)
         for i in range(TRAINING_STEPS):
             xi, yi = sess.run([x_train, y_train])
-            h, w = xi.shape
-            xs = np.reshape(xi, (1, h, w, 1))
-            ys = np.reshape(yi, (1, 1))
-            yo = sess.run(y, feed_dict={x: xs, y_: ys})
-            _, loss_value, step = sess.run([train_op, loss, global_step], feed_dict={x: xs, y_: ys})
+            xs = np.reshape(xi, (BATCH_SIZE, INPUT_SIZE, INPUT_SIZE, 1))
+            ys = np.reshape(yi, (BATCH_SIZE, 1))
+            _, loss_value, step, yo = sess.run([train_op, loss, global_step, y], feed_dict={x: xs, y_: ys})
 
-            if i % 1 == 0:
+            if i % 100 == 0:
                 print(
                     "After %d training step(s), loss on training batch is %g."
                     % (step, loss_value))
-                print('y, y_, regularization:', sigmoid(yo[0, 0]), yi)
+                print('y, y_:', yo, yi)
 
         coord.request_stop()
         coord.join(threads)
@@ -79,17 +79,18 @@ def get_data(filename):
     features = tf.parse_single_example(serialized_example,
                                        features={
                                        'label': tf.FixedLenFeature([], tf.int64),
-                                       'height': tf.FixedLenFeature([], tf.int64),
-                                       'width': tf.FixedLenFeature([], tf.int64),
                                        'img' : tf.FixedLenFeature([], tf.string)})
     
     img = tf.decode_raw(features['img'], tf.uint8)
     label = tf.cast(features['label'], tf.int32)
-    height = features['height']
-    width = features['width']
-    img = tf.reshape(img, (height, width))
+
+    img = tf.reshape(img, (INPUT_SIZE, INPUT_SIZE))
+    img = tf.cast(img, tf.float32) * (1. / 255)
+
+    img_batch, label_batch = tf.train.shuffle_batch([img, label], batch_size=BATCH_SIZE, capacity= 100, num_threads= 2, min_after_dequeue= 10)
+
     
-    return img, label
+    return img_batch, label_batch
 
 def sigmoid(x):
     return 1 / (1 + math.exp(-x))

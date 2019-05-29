@@ -31,8 +31,6 @@ def image_words_prep(IMG_DIR):
     dirs = [x[1] for x in os.walk('./')][0]
     images = []
     labels = []
-    heights = []
-    widths = []
     for di in dirs:
         print('process ' + di + '......')
         os.chdir(di)
@@ -47,6 +45,7 @@ def image_words_prep(IMG_DIR):
                 if len(lines_words) != 0:
                     im_labels = iu.formu_labels(hf_im, im_lines, im_lines_words)
                     lines_words = flat2d(lines_words)
+                    lines_words = [x.resize((50, 50)) for x in lines_words]
                     im_labels = flat2d(im_labels)
                     lines_words, im_labels = over_sampling(lines_words, im_labels)
                 else:
@@ -54,12 +53,8 @@ def image_words_prep(IMG_DIR):
             except Exception as e:
                 print(di + nf)
                 raise e
-            height = [x.size[1] for x in lines_words]
-            width = [x.size[0] for x in lines_words]
             images.extend(lines_words)
             labels.extend(im_labels)
-            heights.extend(height)
-            widths.extend(width)
         os.chdir('../')
     
     writer = tf.python_io.TFRecordWriter(OUT_PATH)
@@ -67,8 +62,6 @@ def image_words_prep(IMG_DIR):
         image_raw = images[i].tobytes()
         example = tf.train.Example(features=tf.train.Features(feature={
                                    'label': _init64_feature(labels[i]),
-                                   'height': _init64_feature(heights[i]),
-                                   'width': _init64_feature(widths[i]),
                                    'img': _bytes_feature(image_raw)}))
         writer.write(example.SerializeToString())
     writer.close() 
