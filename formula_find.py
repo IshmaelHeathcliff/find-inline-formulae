@@ -17,7 +17,8 @@ def main(img):
     im, start = iu.crop_border(img, False)
     im = im.convert('L')
     im_lines, im_lines_words, lines_words, rotated = iu.crop_lines_words(im)
-
+    if rotated:
+        im_init = im_init.rotate(-90, expand=True)
     lines_words = flat2d(lines_words)
     im_net = np.asarray([np.asarray(x.resize((50, 50)), dtype=np.float32) / 255 for x in lines_words])
     im_net = np.reshape(im_net, [-1, 50, 50, 1])
