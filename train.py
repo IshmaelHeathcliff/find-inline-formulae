@@ -9,7 +9,7 @@ import numpy as np
 
 tf.logging.set_verbosity(tf.logging.ERROR)
 
-TRAIN_DATA = 'train.tfrecords-1'
+TRAIN_DATA = 'train.tfrecords-*'
 TEST_DATA = 'test.tfrecords'
 INPUT_SIZE = 50
 BATCH_SIZE = 100
@@ -18,7 +18,7 @@ DATA_NUM =  1000
 LEARNING_RATE_BASE = 0.01
 LEARNING_RATE_DECAY = 0.9
 REGULARIZATION_RATE = 0.0001
-TRAINING_STEPS = 10000
+TRAINING_STEPS = 50000
 MOVING_AVERAGE_DECAY = 0.99
 
 

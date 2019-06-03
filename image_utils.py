@@ -75,7 +75,7 @@ def formu_labels(hf_im, im_lines, im_lines_words): # 获得标记信息
     return im_labels
 
 
-def crop_lines(im, save_line_im=False): # 获得文行信息
+def crop_lines(im, save_line_im=False, check_rotate=True): # 获得文行信息
     col, lin = im.size
     im_data = np.asarray(im)
     im_reverse = np.where(im_data != 255, 1., 0.)
@@ -86,7 +86,7 @@ def crop_lines(im, save_line_im=False): # 获得文行信息
     im_sum_y = np.sum(im_reverse, axis=0)
     im_blank_x = np.sum(np.where(im_sum_x == 0, 1, 0)) / lin
     im_blank_y = np.sum(np.where(im_sum_y == 0, 1, 0)) / col
-    if im_blank_y > im_blank_x:
+    if im_blank_y > im_blank_x and check_rotate == True:
         im_data = np.rot90(im_data, -1)
         im = Image.fromarray(im_data)
         im_sum = im_sum_y / lin
@@ -145,11 +145,11 @@ def crop_lines(im, save_line_im=False): # 获得文行信息
     return im_lines, rotated
 
 
-def crop_lines_words(im): # 获得整张图的单词信息及单词图片
+def crop_lines_words(im, check_rotate=True): # 获得整张图的单词信息及单词图片
     col, lin = im.size
     lines_words = []
     im_lines_words = []
-    im_lines, rotated = crop_lines(im)
+    im_lines, rotated = crop_lines(im, False, check_rotate)
     for i in range(len(im_lines)):
         line_im = im.crop((0, im_lines[i][0], col, im_lines[i][1]))
         im_words, words = crop_words(line_im)
@@ -219,6 +219,15 @@ def crop_words(im, save_words=False): # 获得单行单词信息及图片
         im_words.append([im_blanks[i][1], im_blanks[i + 1][0]])
     if im_blanks[-1][1] != col:
         im_words.append([im_blanks[-1][1], col])
+
+    i = 0
+    up = len(im_words)
+    while i < up:
+        if im_words[i][1] - im_words[i][0] < lin * 0.3:
+            del im_words[i]
+            up -= 1
+        else:
+            i += 1
 
     words = []
     for i in range(len(im_words)):
