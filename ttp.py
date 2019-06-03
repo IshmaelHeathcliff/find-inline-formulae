@@ -1,3 +1,5 @@
+# 命令行命令， 单个tex转换
+
 import sys
 import texf_topng
 

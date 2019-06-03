@@ -1,3 +1,5 @@
+# 将tex文件转换为png图片
+
 import re
 import os
 import PyPDF2

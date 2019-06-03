@@ -1,10 +1,12 @@
+# 图片处理工具合集
+
 import PIL
 from PIL import Image
 import numpy as np
 import math
 
 
-def crop_border(img):
+def crop_border(img, save=True): # 去除空白边框
     im = Image.open(img)
     old_im = im.convert('L')
     img_data = np.asarray(old_im, dtype=np.uint8)  # height, width
@@ -16,11 +18,13 @@ def crop_border(img):
     x_min = np.min(nnz_inds[1])
     x_max = np.max(nnz_inds[1])
     out_im = im.crop((x_min, y_min, x_max + 1, y_max + 1))
+    if save == False:
+        return out_im, (x_min, y_min)
     out_im.save(img)
-    return (x_min, y_min)
+    return
 
 
-def has_red_frame(img):
+def has_red_frame(img): # 判断是否含有红框
     im_data = np.asarray(Image.open(img))
     red = im_data[:, :, 0]
     green = im_data[:, :, 1]
@@ -36,7 +40,7 @@ def has_red_frame(img):
         return True
 
 
-def formu_labels(hf_im, im_lines, im_lines_words):
+def formu_labels(hf_im, im_lines, im_lines_words): # 获得标记信息
     im_data = np.asarray(hf_im)
     im_labels = []
     for i in range(len(im_lines)):
@@ -71,7 +75,7 @@ def formu_labels(hf_im, im_lines, im_lines_words):
     return im_labels
 
 
-def crop_lines(im, save_line_im=False):
+def crop_lines(im, save_line_im=False): # 获得文行信息
     col, lin = im.size
     im_data = np.asarray(im)
     im_reverse = np.where(im_data != 255, 1., 0.)
@@ -104,7 +108,7 @@ def crop_lines(im, save_line_im=False):
             lines_index_start.append(i)
     lines_index_end.append(lin)
 
-    im_lines = []
+    im_lines = [] # [[start, end, mid, height, sum, quater_sum, start_sum, end_sum], ...]
     for i in range(len(lines_index_start)):
         line_start = lines_index_start[i]
         line_end = lines_index_end[i]
@@ -141,7 +145,7 @@ def crop_lines(im, save_line_im=False):
     return im_lines, rotated
 
 
-def crop_lines_words(im):
+def crop_lines_words(im): # 获得整张图的单词信息及单词图片
     col, lin = im.size
     lines_words = []
     im_lines_words = []
@@ -152,12 +156,12 @@ def crop_lines_words(im):
         im_lines_words.append(im_words)
         lines_words.append(words)
 
-    im_lines = [x[0:3] for x in im_lines]
+    im_lines = [x[0:3] for x in im_lines] # [[start, end, mid], ...]
 
     return im_lines, im_lines_words, lines_words, rotated
 
 
-def crop_words(im, save_words=False):
+def crop_words(im, save_words=False): # 获得单行单词信息及图片
     col, lin = im.size
     im_data = np.asarray(im)
     im_reverse = np.where(im_data != 255, 1., 0.)
@@ -183,7 +187,9 @@ def crop_words(im, save_words=False):
 
     # 找出非字母间隔的空白
     wids = np.asarray([im_blanks[i][2] for i in range(len(im_blanks))])
-    wid_mean, std = min_square(wids)
+    wid_mean = 0
+    if len(wids) != 0:
+        wid_mean, std = min_square(wids)
     # wid_mean = wid_mean + 0.2 * std
     is_blank = np.where(wids > wid_mean, 1, 0)
 
@@ -198,7 +204,10 @@ def crop_words(im, save_words=False):
         else:
             i += 1
 
-    im_words = []
+    im_words = [] # [[start, end], ...]
+
+    if len(im_blanks) == 0:
+        return [[0, col]], [im]
     try:
         if im_blanks[0][0] != 0:
             im_words.append([0, im_blanks[0][0]])
@@ -221,11 +230,14 @@ def crop_words(im, save_words=False):
     return im_words, words
 
 
-def min_square(lis):
+def min_square(lis): # 最小二乘法
     num = len(lis)
     lis = np.asarray(lis)
     mi, ma = np.min(lis), np.max(lis)
     out_lis = []
+    if mi == ma:
+        return lis, 0
+
     for i in range(ma - mi):
         sq = np.sum((lis - mi)**2)
         out_lis.append(math.sqrt(sq / num))

@@ -1,3 +1,5 @@
+# 批量处理图片获得数据tfrecords
+
 import tensorflow as tf
 import numpy as np
 import sys
@@ -5,7 +7,7 @@ import os
 import image_utils as iu
 from PIL import Image
 
-IMG_DIR = '2003/Images/train'
+IMG_DIR = '2003/Images'
 TEST_IMG_DIR = 'test/Images'
 OUT_PATH = 'train.tfrecords'
 
@@ -31,6 +33,8 @@ def image_words_prep(IMG_DIR):
     dirs = [x[1] for x in os.walk('./')][0]
     images = []
     labels = []
+    count = 0
+    num = 1
     for di in dirs:
         print('process ' + di + '......')
         os.chdir(di)
@@ -52,12 +56,33 @@ def image_words_prep(IMG_DIR):
                     continue
             except Exception as e:
                 print(di + nf)
-                raise e
+                continue
             images.extend(lines_words)
             labels.extend(im_labels)
+            count += len(lines_words)
+            
+            if count > num * 10000:
+                num += 1
+                print("now count is:", count)
+
+            if len(images) > 300000:
+                os.chdir('../')
+                writer = tf.python_io.TFRecordWriter(OUT_PATH + '-' + str(count // 300000))
+                for i in range(len(images)):
+                    image_raw = images[i].tobytes()
+                    example = tf.train.Example(features=tf.train.Features(feature={
+                                                'label': _init64_feature(labels[i]),
+                                                'img': _bytes_feature(image_raw)}))
+                    writer.write(example.SerializeToString())
+                writer.close() 
+                images = []
+                labels = []
+                os.chdir(di)
+                
+        
         os.chdir('../')
     
-    writer = tf.python_io.TFRecordWriter(OUT_PATH)
+    writer = tf.python_io.TFRecordWriter(OUT_PATH + '-' + str(count // 300000 + 1))
     for i in range(len(images)):
         image_raw = images[i].tobytes()
         example = tf.train.Example(features=tf.train.Features(feature={
@@ -65,6 +90,7 @@ def image_words_prep(IMG_DIR):
                                    'img': _bytes_feature(image_raw)}))
         writer.write(example.SerializeToString())
     writer.close() 
+    print("the number fo this tfrecord data:", count)
     os.chdir('../')
 
 def over_sampling(words, labels):
@@ -91,4 +117,4 @@ def over_sampling(words, labels):
     
 
 
-image_words_prep(TEST_IMG_DIR)
+image_words_prep(IMG_DIR)

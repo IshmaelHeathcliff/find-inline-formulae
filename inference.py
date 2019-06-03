@@ -1,3 +1,5 @@
+# 神经网络结构， conv3 --> pool --> conv3 --> pool --conv3 --> spp --> fc
+
 import tensorflow as tf
 import math
 
@@ -6,18 +8,21 @@ OUTPUT_NODE = 2
 NUM_CHANNELS = 1
 NUM_LABELS = 1
 
-CONV1_DEEP = 32
+CONV1_DEEP = 64
 CONV1_SIZE = 3
 
-CONV2_DEEP = 64
+CONV2_DEEP = 128
 CONV2_SIZE = 3
 
-BINS = [4, 2, 1]
-FC_SIZE = 21 * 64
+CONV3_DEEP = 256
+CONV3_SIZE = 3
+
+BINS = [6, 3, 2, 1]
+FC_SIZE = 50*256
 
 
 def inference(input_tensor, train, regularizer):
-    with tf.variable_scope('layer1-conv1'):
+    with tf.variable_scope('layer1-conv1', reuse=tf.AUTO_REUSE):
         conv1_weights = tf.get_variable(
             "weight", [CONV1_SIZE, CONV1_SIZE, NUM_CHANNELS, CONV1_DEEP],
             initializer=tf.truncated_normal_initializer(stddev=0.1))
@@ -27,32 +32,47 @@ def inference(input_tensor, train, regularizer):
                              conv1_weights,
                              strides=[1, 1, 1, 1],
                              padding='SAME')
-        relu1 = tf.nn.relu(tf.nn.bias_add(conv1, conv1_biases))
+        bn1 = tf.layers.batch_normalization(conv1, training=train)
+        relu1 = tf.nn.relu(tf.nn.bias_add(bn1, conv1_biases))
 
-    with tf.variable_scope('layer2-pool1'):
+    with tf.variable_scope('layer2-pool1', reuse=tf.AUTO_REUSE):
         pool1 = tf.nn.max_pool(relu1, ksize=(1,2,2,1), strides=(1,2,2,1), padding='SAME')
-        lrn1 = tf.nn.lrn(pool1, 4, bias=1.0, alpha=0.0001, beta=0.75)
 
-    with tf.variable_scope("layer3-conv2"):
+    with tf.variable_scope("layer3-conv2", reuse=tf.AUTO_REUSE):
         conv2_weights = tf.get_variable(
             "weight", [CONV2_SIZE, CONV2_SIZE, CONV1_DEEP, CONV2_DEEP],
             initializer=tf.truncated_normal_initializer(stddev=0.1))
         conv2_biases = tf.get_variable(
             "bias", [CONV2_DEEP], initializer=tf.constant_initializer(0.0))
-        conv2 = tf.nn.conv2d(lrn1,
+        conv2 = tf.nn.conv2d(pool1,
                              conv2_weights,
                              strides=[1, 1, 1, 1],
                              padding='SAME')
-        relu2 = tf.nn.relu(tf.nn.bias_add(conv2, conv2_biases))
+        bn2 = tf.layers.batch_normalization(conv2, training=train)
+        relu2 = tf.nn.relu(tf.nn.bias_add(bn2, conv2_biases))
 
-    with tf.variable_scope('layer4-pool2'):
+    with tf.variable_scope('layer4-pool2', reuse=tf.AUTO_REUSE):
         pool2 = tf.nn.max_pool(relu2, ksize=(1,2,2,1), strides=(1,2,2,1), padding='SAME')
-        lrn2 = tf.nn.lrn(pool2, 4, bias=1.0, alpha=0.0001, beta=0.75)
 
-    with tf.variable_scope('layer5-spp'):
-        spp = Spp_layer(lrn2, BINS)
+    with tf.variable_scope("layer5-conv3", reuse=tf.AUTO_REUSE):
+        conv3_weights = tf.get_variable(
+            "weight", [CONV3_SIZE, CONV3_SIZE, CONV2_DEEP, CONV3_DEEP],
+            initializer=tf.truncated_normal_initializer(stddev=0.1))
+        conv3_biases = tf.get_variable(
+            "bias", [CONV3_DEEP], initializer=tf.constant_initializer(0.0))
+        conv3 = tf.nn.conv2d(pool2,
+                             conv3_weights,
+                             strides=[1, 1, 1, 1],
+                             padding='SAME')
+        bn3 = tf.layers.batch_normalization(conv3, training=train)
+        relu3 = tf.nn.relu(tf.nn.bias_add(bn3, conv3_biases))
 
-    with tf.variable_scope('layer6-fc'):
+    with tf.variable_scope('layer6-spp', reuse=tf.AUTO_REUSE):
+        spp = Spp_layer(relu3, BINS)
+        if train: spp = tf.nn.dropout(spp, 0.5)
+
+
+    with tf.variable_scope('layer7-fc', reuse=tf.AUTO_REUSE):
         fc_weights = tf.get_variable(
             "weight", [FC_SIZE, NUM_LABELS],
             initializer=tf.truncated_normal_initializer(stddev=0.1))
@@ -66,7 +86,8 @@ def inference(input_tensor, train, regularizer):
 
 
 def Spp_layer(feature_map, bins):
-    batch_size, x, y, _ = feature_map.get_shape().as_list()
+    bs, x, y, _ = feature_map.get_shape().as_list()
+    batch_size = tf.shape(feature_map)[0]
     pooling_out_all = []
 
     for layer in range(len(bins)):

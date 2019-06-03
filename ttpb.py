@@ -1,3 +1,5 @@
+# 命令行命令， 批量tex转换
+
 import sys
 import texf_topng
 import os

@@ -2,6 +2,6 @@
 __pycache__
 test*
 refs/
-primal/
 .vscode/
 .vscode/**
+dataset/
