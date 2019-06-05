@@ -1,10 +1,10 @@
-This is XeTeX, Version 3.14159265-2.6-0.99999 (TeX Live 2018/W32TeX) (preloaded format=xelatex 2018.11.20)  4 JUN 2019 10:57
+This is XeTeX, Version 3.14159265-2.6-0.99999 (TeX Live 2018/W32TeX) (preloaded format=xelatex 2018.12.31)  4 JUN 2019 21:15
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
  %&-line parsing enabled.
-**d:/Project/Graduation/Article/graduation
-(d:/Project/Graduation/Article/graduation.tex
+**c:/Users/Ishma/Documents/graduation/Article/graduation
+(c:/Users/Ishma/Documents/graduation/Article/graduation.tex
 LaTeX2e <2018-04-01> patch level 2
 Babel <3.18> and hyphenation patterns for 84 language(s) loaded.
 (c:/texlive/2018/texmf-dist/tex/latex/base/article.cls
@@ -822,11 +822,11 @@ LaTeX Font Info:    External font `cmex10' loaded for size
  [2] [3] (./graduation.bbl [4]) [5] (./graduation.aux) ) 
 Here is how much of TeX's memory you used:
  11930 strings out of 492970
- 284990 string characters out of 6137297
+ 285032 string characters out of 6137297
  374793 words of memory out of 5000000
  15918 multiletter control sequences out of 15000+600000
  535029 words of font info for 61 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
- 42i,6n,71p,10464b,262s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 42i,6n,71p,10478b,262s stack positions out of 5000i,500n,10000p,200000b,80000s
 
 Output written on graduation.pdf (5 pages).
