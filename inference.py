@@ -21,19 +21,24 @@ BINS = [6, 3, 2, 1]
 FC_SIZE = 50*256
 
 
-def inference(input_tensor, train, regularizer):
+def inference(input_tensor, avg, train, regularizer):
     with tf.variable_scope('layer1-conv1', reuse=tf.AUTO_REUSE):
         conv1_weights = tf.get_variable(
             "weight", [CONV1_SIZE, CONV1_SIZE, NUM_CHANNELS, CONV1_DEEP],
             initializer=tf.truncated_normal_initializer(stddev=0.1))
         conv1_biases = tf.get_variable(
             "bias", [CONV1_DEEP], initializer=tf.constant_initializer(0.0))
+
+        if avg is not None:
+            conv1_weights = avg.average(conv1_weights)
+            conv1_biases = avg.average(conv1_biases)
+
         conv1 = tf.nn.conv2d(input_tensor,
                              conv1_weights,
                              strides=[1, 1, 1, 1],
                              padding='SAME')
         bn1 = tf.layers.batch_normalization(conv1, training=train)
-        prelu1 = prelu(tf.nn.bias_add(bn1, conv1_biases))
+        prelu1 = prelu(tf.nn.bias_add(bn1, conv1_biases), avg)
 
     with tf.variable_scope('layer2-pool1', reuse=tf.AUTO_REUSE):
         pool1 = tf.nn.max_pool(prelu1, ksize=(1,2,2,1), strides=(1,2,2,1), padding='SAME')
@@ -44,12 +49,17 @@ def inference(input_tensor, train, regularizer):
             initializer=tf.truncated_normal_initializer(stddev=0.1))
         conv2_biases = tf.get_variable(
             "bias", [CONV2_DEEP], initializer=tf.constant_initializer(0.0))
+
+        if avg is not None:
+            conv2_weights = avg.average(conv2_weights)
+            conv2_biases = avg.average(conv2_biases)
+
         conv2 = tf.nn.conv2d(pool1,
                              conv2_weights,
                              strides=[1, 1, 1, 1],
                              padding='SAME')
         bn2 = tf.layers.batch_normalization(conv2, training=train)
-        prelu2 = prelu(tf.nn.bias_add(bn2, conv2_biases))
+        prelu2 = prelu(tf.nn.bias_add(bn2, conv2_biases), avg)
 
     with tf.variable_scope('layer4-pool2', reuse=tf.AUTO_REUSE):
         pool2 = tf.nn.max_pool(prelu2, ksize=(1,2,2,1), strides=(1,2,2,1), padding='SAME')
@@ -60,12 +70,17 @@ def inference(input_tensor, train, regularizer):
             initializer=tf.truncated_normal_initializer(stddev=0.1))
         conv3_biases = tf.get_variable(
             "bias", [CONV3_DEEP], initializer=tf.constant_initializer(0.0))
+
+        if avg is not None:
+            conv3_weights = avg.average(conv3_weights)
+            conv3_biases = avg.average(conv3_biases)
+
         conv3 = tf.nn.conv2d(pool2,
                              conv3_weights,
                              strides=[1, 1, 1, 1],
                              padding='SAME')
         bn3 = tf.layers.batch_normalization(conv3, training=train)
-        prelu3 = prelu(tf.nn.bias_add(bn3, conv3_biases))
+        prelu3 = prelu(tf.nn.bias_add(bn3, conv3_biases), avg)
 
     with tf.variable_scope('layer6-spp', reuse=tf.AUTO_REUSE):
         spp = Spp_layer(prelu3, BINS)
@@ -80,6 +95,11 @@ def inference(input_tensor, train, regularizer):
             tf.add_to_collection('losses', regularizer(fc_weights))
         fc_biases = tf.get_variable("bias", [NUM_LABELS],
                                     initializer=tf.constant_initializer(0.1))
+
+        if avg is not None:
+            fc_weights = avg.average(fc_weights)
+            fc_biases = avg.average(fc_biases)
+
         logit = tf.matmul(spp, fc_weights) + fc_biases
 
     return logit
@@ -101,10 +121,13 @@ def Spp_layer(feature_map, bins):
     return feature_map_out
 
 
-def prelu(_x):
+def prelu(_x, avg):
     alphas = tf.get_variable('alpha', _x.get_shape()[-1],
                         initializer=tf.constant_initializer(0.0),
                             dtype=tf.float32)
+    if avg is not None:
+        alphas = avg.average(alphas)  
+
     pos = tf.nn.relu(_x)
     neg = alphas * (_x - abs(_x)) * 0.5
 

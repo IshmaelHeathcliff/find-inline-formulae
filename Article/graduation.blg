@@ -1,0 +1,46 @@
+This is BibTeX, Version 0.99d (TeX Live 2018/W32TeX)
+Capacity: max_strings=100000, hash_size=100000, hash_prime=85009
+The top-level auxiliary file: graduation.aux
+The style file: plain.bst
+Database file #1: ref.bib
+You've used 10 entries,
+            2118 wiz_defined-function locations,
+            543 strings with 5429 characters,
+and the built_in function-call counts, 3046 in all, are:
+= -- 277
+> -- 224
+< -- 0
++ -- 88
+- -- 78
+* -- 216
+:= -- 585
+add.period$ -- 30
+call.type$ -- 10
+change.case$ -- 69
+chr.to.int$ -- 0
+cite$ -- 10
+duplicate$ -- 100
+empty$ -- 171
+format.name$ -- 78
+if$ -- 584
+int.to.chr$ -- 0
+int.to.str$ -- 10
+missing$ -- 10
+newline$ -- 53
+num.names$ -- 20
+pop$ -- 49
+preamble$ -- 1
+purify$ -- 59
+quote$ -- 0
+skip$ -- 80
+stack$ -- 0
+substring$ -- 50
+swap$ -- 10
+text.length$ -- 0
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 40
+warning$ -- 0
+while$ -- 20
+width$ -- 12
+write$ -- 112

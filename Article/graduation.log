@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.14159265-2.6-0.99999 (TeX Live 2018/W32TeX) (preloaded format=xelatex 2018.11.20)  6 JUN 2019 11:24
+This is XeTeX, Version 3.14159265-2.6-0.99999 (TeX Live 2018/W32TeX) (preloaded format=xelatex 2018.11.20)  6 JUN 2019 21:12
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -858,64 +858,14 @@ LaTeX Font Info:    Overwriting math alphabet `\mathtt' in version `bold'
 
  [1
 
-]
-
-LaTeX Warning: Citation `rcnn' on page 2 undefined on input line 31.
-
-
-LaTeX Warning: Citation `spp' on page 2 undefined on input line 33.
-
-
-LaTeX Warning: Citation `frcnn' on page 2 undefined on input line 35.
-
-
-LaTeX Warning: Citation `ftrcnn' on page 2 undefined on input line 37.
-
-
-LaTeX Warning: Citation `yolo' on page 2 undefined on input line 39.
-
-[2]
-
-LaTeX Warning: Citation `ssd' on page 3 undefined on input line 41.
-
-[3] [4] [5]
-
-LaTeX Warning: Citation `rcnn' on page 6 undefined on input line 102.
-
-
-LaTeX Warning: Citation `spp' on page 6 undefined on input line 103.
-
-
-LaTeX Warning: Citation `frcnn' on page 6 undefined on input line 104.
-
-
-LaTeX Warning: Citation `ftrcnn' on page 6 undefined on input line 105.
-
-
-LaTeX Warning: Citation `mrcnn' on page 6 undefined on input line 106.
-
-
-LaTeX Warning: Citation `yolo' on page 6 undefined on input line 107.
-
-
-LaTeX Warning: Citation `ssd' on page 6 undefined on input line 108.
-
-
-LaTeX Warning: Citation `ctpn' on page 6 undefined on input line 109.
-
-No file graduation.bbl.
-[6] (./graduation.aux)
-
-LaTeX Warning: There were undefined references.
-
- ) 
+] [2] [3] [4] [5] [6] (./graduation.bbl [7]) [8] (./graduation.aux) ) 
 Here is how much of TeX's memory you used:
- 12538 strings out of 492970
- 292211 string characters out of 6137297
+ 12565 strings out of 492970
+ 293195 string characters out of 6137297
  389481 words of memory out of 5000000
- 16514 multiletter control sequences out of 15000+600000
- 535217 words of font info for 60 fonts, out of 8000000 for 9000
+ 16535 multiletter control sequences out of 15000+600000
+ 536378 words of font info for 67 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
- 42i,7n,71p,10464b,259s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 42i,7n,71p,10464b,266s stack positions out of 5000i,500n,10000p,200000b,80000s
 
-Output written on graduation.pdf (6 pages).
+Output written on graduation.pdf (8 pages).

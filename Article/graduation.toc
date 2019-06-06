@@ -4,6 +4,8 @@
 \contentsline {subsection}{\numberline {2.2}单词分割及数据预处理}{4}
 \contentsline {section}{\numberline {3}网络结构与算法}{5}
 \contentsline {subsection}{\numberline {3.1}激活函数与损失函数}{5}
-\contentsline {subsection}{\numberline {3.2}}{6}
-\contentsline {section}{\numberline {4}结果分析}{6}
-\contentsline {section}{\numberline {5}改进}{6}
+\contentsline {subsection}{\numberline {3.2}神经网络优化算法}{6}
+\contentsline {subsubsection}{\numberline {3.2.1}指数衰减学习率}{6}
+\contentsline {subsubsection}{\numberline {3.2.2}批标准化batch normalization}{6}
+\contentsline {section}{\numberline {4}结果分析}{7}
+\contentsline {section}{\numberline {5}改进}{7}

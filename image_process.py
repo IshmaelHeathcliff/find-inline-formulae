@@ -27,7 +27,7 @@ def flat2d(lis):
     return out_lis
 
 
-def image_words_prep(IMG_DIR):
+def image_words_prep(IMG_DIR, train=True):
     os.chdir(IMG_DIR)
 
     dirs = [x[1] for x in os.walk('./')][0]
@@ -51,7 +51,8 @@ def image_words_prep(IMG_DIR):
                     lines_words = flat2d(lines_words)
                     lines_words = [x.resize((50, 50)) for x in lines_words]
                     im_labels = flat2d(im_labels)
-                    lines_words, im_labels = over_sampling(lines_words, im_labels)
+                    if train == True:
+                        lines_words, im_labels = over_sampling(lines_words, im_labels)
                 else:
                     continue
             except Exception as e:
@@ -117,4 +118,5 @@ def over_sampling(words, labels):
     
 
 
-image_words_prep(IMG_DIR)
+# image_words_prep(IMG_DIR)
+image_words_prep(TEST_IMG_DIR, False)

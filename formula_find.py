@@ -23,7 +23,7 @@ def main(img):
     im_net = np.asarray([np.asarray(x.resize((50, 50)), dtype=np.float32) / 255 for x in lines_words])
     im_net = np.reshape(im_net, [-1, 50, 50, 1])
     result = np.reshape(net_check(im_net), (-1, ))
-    print(result)
+    # print(result)
     # print(im_lines_words)
 
 # ===========================不合并相邻
@@ -63,7 +63,7 @@ def main(img):
             if result[ind + leng - 2] == 0:
                 formu_start.append(leng - 1)
 
-        print(formu_start, formu_end)
+        # print(formu_start, formu_end)
 
 
         for j in range(len(formu_start)):
@@ -83,7 +83,7 @@ def main(img):
 
 def net_check(im):
     x = tf.placeholder(tf.float32, [None, 50, 50, 1])
-    y = inference.inference(x, False, None)
+    y = inference.inference(x, None, False, None)
     saver = tf.train.Saver(tf.global_variables())
     with tf.Session() as sess:
         saver.restore(sess, 'my_net.ckpt')
