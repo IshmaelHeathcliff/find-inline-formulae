@@ -90,7 +90,7 @@ def image_words_prep(IMG_DIR):
                                    'img': _bytes_feature(image_raw)}))
         writer.write(example.SerializeToString())
     writer.close() 
-    print("the number fo this tfrecord data:", count)
+    print("the number of this tfrecord data:", count)
     os.chdir('../')
 
 def over_sampling(words, labels):

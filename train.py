@@ -9,8 +9,8 @@ import numpy as np
 
 tf.logging.set_verbosity(tf.logging.ERROR)
 
-TRAIN_DATA = 'train.tfrecords-*'
-TEST_DATA = 'test.tfrecords'
+TRAIN_DATA = 'dataset/train.tfrecords-*'
+TEST_DATA = 'dataset/test.tfrecords'
 INPUT_SIZE = 50
 BATCH_SIZE = 100
 TEST_BATCH_SIZE = 500

@@ -33,10 +33,10 @@ def inference(input_tensor, train, regularizer):
                              strides=[1, 1, 1, 1],
                              padding='SAME')
         bn1 = tf.layers.batch_normalization(conv1, training=train)
-        relu1 = tf.nn.relu(tf.nn.bias_add(bn1, conv1_biases))
+        prelu1 = prelu(tf.nn.bias_add(bn1, conv1_biases))
 
     with tf.variable_scope('layer2-pool1', reuse=tf.AUTO_REUSE):
-        pool1 = tf.nn.max_pool(relu1, ksize=(1,2,2,1), strides=(1,2,2,1), padding='SAME')
+        pool1 = tf.nn.max_pool(prelu1, ksize=(1,2,2,1), strides=(1,2,2,1), padding='SAME')
 
     with tf.variable_scope("layer3-conv2", reuse=tf.AUTO_REUSE):
         conv2_weights = tf.get_variable(
@@ -49,10 +49,10 @@ def inference(input_tensor, train, regularizer):
                              strides=[1, 1, 1, 1],
                              padding='SAME')
         bn2 = tf.layers.batch_normalization(conv2, training=train)
-        relu2 = tf.nn.relu(tf.nn.bias_add(bn2, conv2_biases))
+        prelu2 = prelu(tf.nn.bias_add(bn2, conv2_biases))
 
     with tf.variable_scope('layer4-pool2', reuse=tf.AUTO_REUSE):
-        pool2 = tf.nn.max_pool(relu2, ksize=(1,2,2,1), strides=(1,2,2,1), padding='SAME')
+        pool2 = tf.nn.max_pool(prelu2, ksize=(1,2,2,1), strides=(1,2,2,1), padding='SAME')
 
     with tf.variable_scope("layer5-conv3", reuse=tf.AUTO_REUSE):
         conv3_weights = tf.get_variable(
@@ -65,10 +65,10 @@ def inference(input_tensor, train, regularizer):
                              strides=[1, 1, 1, 1],
                              padding='SAME')
         bn3 = tf.layers.batch_normalization(conv3, training=train)
-        relu3 = tf.nn.relu(tf.nn.bias_add(bn3, conv3_biases))
+        prelu3 = prelu(tf.nn.bias_add(bn3, conv3_biases))
 
     with tf.variable_scope('layer6-spp', reuse=tf.AUTO_REUSE):
-        spp = Spp_layer(relu3, BINS)
+        spp = Spp_layer(prelu3, BINS)
         if train: spp = tf.nn.dropout(spp, 0.5)
 
 
@@ -99,3 +99,13 @@ def Spp_layer(feature_map, bins):
 
     feature_map_out = tf.concat(axis=1, values=pooling_out_all)
     return feature_map_out
+
+
+def prelu(_x):
+    alphas = tf.get_variable('alpha', _x.get_shape()[-1],
+                        initializer=tf.constant_initializer(0.0),
+                            dtype=tf.float32)
+    pos = tf.nn.relu(_x)
+    neg = alphas * (_x - abs(_x)) * 0.5
+
+    return pos + neg
