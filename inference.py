@@ -1,4 +1,4 @@
-# 神经网络结构， conv3 --> pool --> conv3 --> pool --conv3 --> spp --> fc
+# 神经网络结构， conv3 --> pool --> conv3 --> pool --conv3 --> spp --> fc1 --> fc2
 
 import tensorflow as tf
 import math
@@ -8,24 +8,25 @@ OUTPUT_NODE = 2
 NUM_CHANNELS = 1
 NUM_LABELS = 1
 
-CONV1_DEEP = 64
+CONV1_DEEP = 32
 CONV1_SIZE = 3
 
-CONV2_DEEP = 128
+CONV2_DEEP = 64
 CONV2_SIZE = 3
 
-CONV3_DEEP = 256
+CONV3_DEEP = 128
 CONV3_SIZE = 3
 
 BINS = [6, 3, 2, 1]
-FC_SIZE = 50*256
+FC1_SIZE = 50*128
+FC2_SIZE = 512
 
 
 def inference(input_tensor, avg, train, regularizer):
     with tf.variable_scope('layer1-conv1', reuse=tf.AUTO_REUSE):
         conv1_weights = tf.get_variable(
             "weight", [CONV1_SIZE, CONV1_SIZE, NUM_CHANNELS, CONV1_DEEP],
-            initializer=tf.truncated_normal_initializer(stddev=0.1))
+            initializer=tf.truncated_normal_initializer(stddev=0.05))
         conv1_biases = tf.get_variable(
             "bias", [CONV1_DEEP], initializer=tf.constant_initializer(0.0))
 
@@ -46,7 +47,7 @@ def inference(input_tensor, avg, train, regularizer):
     with tf.variable_scope("layer3-conv2", reuse=tf.AUTO_REUSE):
         conv2_weights = tf.get_variable(
             "weight", [CONV2_SIZE, CONV2_SIZE, CONV1_DEEP, CONV2_DEEP],
-            initializer=tf.truncated_normal_initializer(stddev=0.1))
+            initializer=tf.truncated_normal_initializer(stddev=0.05))
         conv2_biases = tf.get_variable(
             "bias", [CONV2_DEEP], initializer=tf.constant_initializer(0.0))
 
@@ -67,7 +68,7 @@ def inference(input_tensor, avg, train, regularizer):
     with tf.variable_scope("layer5-conv3", reuse=tf.AUTO_REUSE):
         conv3_weights = tf.get_variable(
             "weight", [CONV3_SIZE, CONV3_SIZE, CONV2_DEEP, CONV3_DEEP],
-            initializer=tf.truncated_normal_initializer(stddev=0.1))
+            initializer=tf.truncated_normal_initializer(stddev=0.05))
         conv3_biases = tf.get_variable(
             "bias", [CONV3_DEEP], initializer=tf.constant_initializer(0.0))
 
@@ -84,23 +85,37 @@ def inference(input_tensor, avg, train, regularizer):
 
     with tf.variable_scope('layer6-spp', reuse=tf.AUTO_REUSE):
         spp = Spp_layer(prelu3, BINS)
-        if train: spp = tf.nn.dropout(spp, 0.5)
 
-
-    with tf.variable_scope('layer7-fc', reuse=tf.AUTO_REUSE):
-        fc_weights = tf.get_variable(
-            "weight", [FC_SIZE, NUM_LABELS],
-            initializer=tf.truncated_normal_initializer(stddev=0.1))
+    with tf.variable_scope('layer7-fc1', reuse=tf.AUTO_REUSE):
+        fc1_weights = tf.get_variable(
+            "weight", [FC1_SIZE, FC2_SIZE],
+            initializer=tf.truncated_normal_initializer(stddev=0.05))
         if regularizer is not None:
-            tf.add_to_collection('losses', regularizer(fc_weights))
-        fc_biases = tf.get_variable("bias", [NUM_LABELS],
+            tf.add_to_collection('losses', regularizer(fc1_weights))
+        fc1_biases = tf.get_variable("bias", [FC2_SIZE],
                                     initializer=tf.constant_initializer(0.1))
 
         if avg is not None:
-            fc_weights = avg.average(fc_weights)
-            fc_biases = avg.average(fc_biases)
+            fc1_weights = avg.average(fc1_weights)
+            fc1_biases = avg.average(fc1_biases)
 
-        logit = tf.matmul(spp, fc_weights) + fc_biases
+        fc1 = prelu(tf.matmul(spp, fc1_weights) + fc1_biases, avg)
+        if train: fc1 = tf.nn.dropout(fc1, 0.5)
+
+    with tf.variable_scope('layer8-fc2', reuse=tf.AUTO_REUSE):
+        fc2_weights = tf.get_variable(
+            "weight", [FC2_SIZE, NUM_LABELS],
+            initializer=tf.truncated_normal_initializer(stddev=0.05))
+        if regularizer is not None:
+            tf.add_to_collection('losses', regularizer(fc2_weights))
+        fc2_biases = tf.get_variable("bias", [NUM_LABELS],
+                                    initializer=tf.constant_initializer(0.1))
+
+        if avg is not None:
+            fc2_weights = avg.average(fc2_weights)
+            fc2_biases = avg.average(fc2_biases)
+
+        logit = tf.matmul(fc1, fc2_weights) + fc2_biases
 
     return logit
 

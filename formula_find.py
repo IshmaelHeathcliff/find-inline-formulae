@@ -84,8 +84,11 @@ def main(img):
 def net_check(im):
     x = tf.placeholder(tf.float32, [None, 50, 50, 1])
     y = inference.inference(x, None, False, None)
-    saver = tf.train.Saver(tf.global_variables())
+    variable_averages = tf.train.ExponentialMovingAverage(
+        0.99)
+    saver = tf.train.Saver([tf.global_variables(), variable_averages.variables_to_restore()])
     with tf.Session() as sess:
+        tf.global_variables_initializer().run()
         saver.restore(sess, 'my_net.ckpt')
         pre = sess.run(tf.cast(tf.greater(y, 0), tf.int32), feed_dict={x:im})
         return pre

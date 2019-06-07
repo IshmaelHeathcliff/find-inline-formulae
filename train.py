@@ -28,34 +28,38 @@ def train():
     x_train_batch, y_train_batch = get_data(TRAIN_DATA, BATCH_SIZE)
     x = tf.placeholder(tf.float32, [None, INPUT_SIZE, INPUT_SIZE, 1], name='x-input')
     y_ = tf.placeholder(tf.float32, [None, 1], name='y-input')
-    regularizer = tf.contrib.layers.l2_regularizer(REGULARIZATION_RATE)
-    y = inference.inference(x, None, True, regularizer)
     global_step = tf.Variable(0, trainable=False)
 
-    # 定义损失函数、学习率、滑动平均操作以及训练过程。
+    # 正则项与网络输出
+    regularizer = tf.contrib.layers.l2_regularizer(REGULARIZATION_RATE)
+    y = inference.inference(x, None, True, regularizer)
+
+    # 滑动平均操作
     variable_averages = tf.train.ExponentialMovingAverage(
         MOVING_AVERAGE_DECAY, global_step / 10)
     variables_averages_op = variable_averages.apply(tf.trainable_variables())
 
+    # 测试数据输入
+    x_test_batch, y_test_batch = get_data(TEST_DATA, TEST_BATCH_SIZE)
+    y_t = inference.inference(x, variable_averages, False, None)
+    preds = tf.reshape(tf.cast(tf.greater(y_t, 0.), tf.float32), [TEST_BATCH_SIZE, ])
+    labels = tf.reshape(y_, [TEST_BATCH_SIZE, ])
+    accuracy = tf.reduce_mean(tf.cast(tf.equal(preds, labels), tf.float32))
+
+    # 损失函数
     cross_entropy_mean = tf.reduce_mean(tf.nn.sigmoid_cross_entropy_with_logits(logits=y, labels=y_))
     loss = cross_entropy_mean  + tf.add_n(tf.get_collection('losses')) # 损失加上正则化
 
+    # 指数衰减学习率
     learning_rate = tf.train.exponential_decay(LEARNING_RATE_BASE,
                                             global_step,
                                             DATA_NUM,
                                             LEARNING_RATE_DECAY,
                                             staircase=True)
 
+    # 训练过程定义
     update_ops = tf.get_collection(tf.GraphKeys.UPDATE_OPS)
     train_steps = tf.train.GradientDescentOptimizer(learning_rate).minimize(loss, global_step=global_step)
-    
-    # 测试数据输入
-    x_test_batch, y_test_batch = get_data(TEST_DATA, TEST_BATCH_SIZE)
-    y_t = inference.inference(x, variable_averages, False, None)
-    # test_cross_entropy_mean = tf.reduce_mean(tf.nn.sigmoid_cross_entropy_with_logits(logits=y_t, labels=y_))
-    preds = tf.reshape(tf.cast(tf.greater(y_t, 0.), tf.float32), [TEST_BATCH_SIZE, ])
-    labels = tf.reshape(y_, [TEST_BATCH_SIZE, ])
-    accuracy = tf.reduce_mean(tf.cast(tf.equal(preds, labels), tf.float32))
 
     with tf.control_dependencies([variables_averages_op]): # 添加update_ops
         train_op = tf.group([train_steps, update_ops])
@@ -82,12 +86,19 @@ def train():
                 x_test, y_test = sess.run([x_test_batch, y_test_batch])
                 x_test = np.reshape(x_test, [TEST_BATCH_SIZE, INPUT_SIZE, INPUT_SIZE, 1])
                 y_test = np.reshape(y_test, [TEST_BATCH_SIZE, 1])
-                pre, lab, accu = sess.run([preds, labels, accuracy], feed_dict={x: x_test, y_:y_test})
+                accu = sess.run(accuracy, feed_dict={x: x_test, y_:y_test})
                 print("Test accuracy:", accu)
                 # print("Test loss:", test_loss)
                 # print("preditions:", pre)
                 # print("labels:", lab)
 
+        acu = 0
+        for i in range(10):
+            x_test, y_test = sess.run([x_test_batch, y_test_batch])
+            x_test = np.reshape(x_test, [TEST_BATCH_SIZE, INPUT_SIZE, INPUT_SIZE, 1])
+            y_test = np.reshape(y_test, [TEST_BATCH_SIZE, 1])
+            accu += sess.run(accuracy, feed_dict={x: x_test, y_:y_test})
+        print("Test accuracy:", accu / 10)
         saver.save(sess, './my_net.ckpt')
 
         coord.request_stop()
@@ -110,7 +121,7 @@ def get_data(filename, bs):
     img = tf.reshape(img, (INPUT_SIZE, INPUT_SIZE))
     img = tf.cast(img, tf.float32) * (1. / 255)
 
-    img_batch, label_batch = tf.train.shuffle_batch([img, label], batch_size=bs, capacity=10000, num_threads=2, min_after_dequeue= 10)
+    img_batch, label_batch = tf.train.shuffle_batch([img, label], batch_size=bs, capacity=1000, num_threads=2, min_after_dequeue= 10)
 
     
     return img_batch, label_batch
