@@ -17,16 +17,16 @@ CONV2_SIZE = 3
 CONV3_DEEP = 128
 CONV3_SIZE = 3
 
-BINS = [6, 3, 2, 1]
-FC1_SIZE = 50*128
-FC2_SIZE = 512
+BINS = [3, 2, 1]
+FC1_SIZE = 14*128
+FC2_SIZE = 256
 
 
 def inference(input_tensor, avg, train, regularizer):
     with tf.variable_scope('layer1-conv1', reuse=tf.AUTO_REUSE):
         conv1_weights = tf.get_variable(
             "weight", [CONV1_SIZE, CONV1_SIZE, NUM_CHANNELS, CONV1_DEEP],
-            initializer=tf.truncated_normal_initializer(stddev=0.05))
+            initializer=tf.contrib.layers.variance_scaling_initializer())
         conv1_biases = tf.get_variable(
             "bias", [CONV1_DEEP], initializer=tf.constant_initializer(0.0))
 
@@ -37,7 +37,7 @@ def inference(input_tensor, avg, train, regularizer):
         conv1 = tf.nn.conv2d(input_tensor,
                              conv1_weights,
                              strides=[1, 1, 1, 1],
-                             padding='SAME')
+                             padding='VALID')
         bn1 = tf.layers.batch_normalization(conv1, training=train)
         prelu1 = prelu(tf.nn.bias_add(bn1, conv1_biases), avg)
 
@@ -47,7 +47,7 @@ def inference(input_tensor, avg, train, regularizer):
     with tf.variable_scope("layer3-conv2", reuse=tf.AUTO_REUSE):
         conv2_weights = tf.get_variable(
             "weight", [CONV2_SIZE, CONV2_SIZE, CONV1_DEEP, CONV2_DEEP],
-            initializer=tf.truncated_normal_initializer(stddev=0.05))
+            initializer=tf.contrib.layers.variance_scaling_initializer())
         conv2_biases = tf.get_variable(
             "bias", [CONV2_DEEP], initializer=tf.constant_initializer(0.0))
 
@@ -58,7 +58,7 @@ def inference(input_tensor, avg, train, regularizer):
         conv2 = tf.nn.conv2d(pool1,
                              conv2_weights,
                              strides=[1, 1, 1, 1],
-                             padding='SAME')
+                             padding='VALID')
         bn2 = tf.layers.batch_normalization(conv2, training=train)
         prelu2 = prelu(tf.nn.bias_add(bn2, conv2_biases), avg)
 
@@ -68,7 +68,7 @@ def inference(input_tensor, avg, train, regularizer):
     with tf.variable_scope("layer5-conv3", reuse=tf.AUTO_REUSE):
         conv3_weights = tf.get_variable(
             "weight", [CONV3_SIZE, CONV3_SIZE, CONV2_DEEP, CONV3_DEEP],
-            initializer=tf.truncated_normal_initializer(stddev=0.05))
+            initializer=tf.contrib.layers.variance_scaling_initializer())
         conv3_biases = tf.get_variable(
             "bias", [CONV3_DEEP], initializer=tf.constant_initializer(0.0))
 
@@ -79,7 +79,7 @@ def inference(input_tensor, avg, train, regularizer):
         conv3 = tf.nn.conv2d(pool2,
                              conv3_weights,
                              strides=[1, 1, 1, 1],
-                             padding='SAME')
+                             padding='VALID')
         bn3 = tf.layers.batch_normalization(conv3, training=train)
         prelu3 = prelu(tf.nn.bias_add(bn3, conv3_biases), avg)
 
@@ -89,7 +89,7 @@ def inference(input_tensor, avg, train, regularizer):
     with tf.variable_scope('layer7-fc1', reuse=tf.AUTO_REUSE):
         fc1_weights = tf.get_variable(
             "weight", [FC1_SIZE, FC2_SIZE],
-            initializer=tf.truncated_normal_initializer(stddev=0.05))
+            initializer=tf.contrib.layers.variance_scaling_initializer())
         if regularizer is not None:
             tf.add_to_collection('losses', regularizer(fc1_weights))
         fc1_biases = tf.get_variable("bias", [FC2_SIZE],
@@ -105,7 +105,7 @@ def inference(input_tensor, avg, train, regularizer):
     with tf.variable_scope('layer8-fc2', reuse=tf.AUTO_REUSE):
         fc2_weights = tf.get_variable(
             "weight", [FC2_SIZE, NUM_LABELS],
-            initializer=tf.truncated_normal_initializer(stddev=0.05))
+            initializer=tf.contrib.layers.variance_scaling_initializer())
         if regularizer is not None:
             tf.add_to_collection('losses', regularizer(fc2_weights))
         fc2_biases = tf.get_variable("bias", [NUM_LABELS],

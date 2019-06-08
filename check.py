@@ -31,7 +31,7 @@ def evaluate():
     labels = tf.reshape(y_, [TEST_BATCH_SIZE, ])
     accuracy = tf.reduce_mean(tf.cast(tf.equal(preds, labels), tf.float32))
 
-    saver = tf.train.Saver([tf.global_variables(), variable_averages.variables_to_restore()])
+    saver = tf.train.Saver(tf.global_variables(), variable_averages.variables_to_restore())
     with tf.Session() as sess:
         tf.local_variables_initializer().run()
         tf.global_variables_initializer().run()

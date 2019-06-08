@@ -1,4 +1,4 @@
-\begin{thebibliography}{1}
+\begin{thebibliography}{10}
 
 \bibitem{frcnn}
 Ross~B. Girshick.
@@ -16,6 +16,12 @@ Kaiming He, Xiangyu Zhang, Shaoqing Ren, and Jian Sun.
 \newblock Spatial pyramid pooling in deep convolutional networks for visual
   recognition.
 \newblock {\em CoRR}, abs/1406.4729, 2014.
+
+\bibitem{msra}
+Kaiming He, Xiangyu Zhang, Shaoqing Ren, and Jian Sun.
+\newblock Delving deep into rectifiers: Surpassing human-level performance on
+  imagenet classification.
+\newblock {\em CoRR}, abs/1502.01852, 2015.
 
 \bibitem{bn}
 Sergey Ioffe and Christian Szegedy.
@@ -51,5 +57,11 @@ Nitish Srivastava, Geoffrey Hinton, Alex Krizhevsky, Ilya Sutskever, and Ruslan
   Salakhutdinov.
 \newblock Dropout: A simple way to prevent neural networks from overfitting.
 \newblock {\em Journal of Machine Learning Research}, 15:1929--1958, 2014.
+
+\bibitem{ctpn}
+Zhi Tian, Weilin Huang, Tong He, Pan He, and Yu~Qiao.
+\newblock Detecting text in natural image with connectionist text proposal
+  network.
+\newblock {\em CoRR}, abs/1609.03605, 2016.
 
 \end{thebibliography}

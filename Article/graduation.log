@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.14159265-2.6-0.99999 (TeX Live 2018/W32TeX) (preloaded format=xelatex 2018.11.20)  7 JUN 2019 17:02
+This is XeTeX, Version 3.14159265-2.6-0.99999 (TeX Live 2018/W32TeX) (preloaded format=xelatex 2018.11.20)  8 JUN 2019 12:18
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -796,7 +796,11 @@ File: xetex.def 2017/06/24 v5.0h Graphics/color driver for xetex
 . <->"SimSun/OT:script=hani;language=DFLT;slant=0.167;"
 . - 'italic small caps'  (m/itsc) with NFSS spec.: 
 .................................................
- (./graduation.aux)
+ (./graduation.aux
+
+LaTeX Warning: Label `fig:label' multiply defined.
+
+)
 \openout1 = `graduation.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 15.
@@ -877,21 +881,34 @@ LaTeX Font Info:    Overwriting math alphabet `\mathtt' in version `bold'
  [1
 
 ] [2] [3] [4] [5] [6] [7] [8] [9]
-File: mynet.jpg Graphic file (type bmp)
-<mynet.jpg>
- [10] [11] [12] (./graduation.bbl
-Underfull \hbox (badness 3088) in paragraph at lines 50--54
+Overfull \hbox (41.64005pt too wide) in paragraph at lines 143--143
+[][][]| 
+ []
+
+File: mynet.png Graphic file (type bmp)
+<mynet.png>
+[10] [11]
+File: rpn.png Graphic file (type bmp)
+<rpn.png>
+File: ctpn.png Graphic file (type bmp)
+<ctpn.png>
+ [12] [13] (./graduation.bbl
+Underfull \hbox (badness 1953) in paragraph at lines 56--60
 []\TU/lmr/m/n/10.95 Nitish Srivastava, Geoffrey Hinton, Alex Krizhevsky, Ilya
  []
 
-) [13] (./graduation.aux) ) 
-Here is how much of TeX's memory you used:
- 12949 strings out of 492970
- 298206 string characters out of 6137297
- 396065 words of memory out of 5000000
- 16896 multiletter control sequences out of 15000+600000
- 536378 words of font info for 67 fonts, out of 8000000 for 9000
- 1348 hyphenation exceptions out of 8191
- 42i,7n,71p,10464b,259s stack positions out of 5000i,500n,10000p,200000b,80000s
+) [14] (./graduation.aux)
 
-Output written on graduation.pdf (13 pages).
+LaTeX Warning: There were multiply-defined labels.
+
+ ) 
+Here is how much of TeX's memory you used:
+ 12963 strings out of 492970
+ 298402 string characters out of 6137297
+ 394065 words of memory out of 5000000
+ 16906 multiletter control sequences out of 15000+600000
+ 536613 words of font info for 69 fonts, out of 8000000 for 9000
+ 1348 hyphenation exceptions out of 8191
+ 42i,8n,71p,10464b,259s stack positions out of 5000i,500n,10000p,200000b,80000s
+
+Output written on graduation.pdf (14 pages).
