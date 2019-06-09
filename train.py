@@ -6,6 +6,7 @@ os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
 import tensorflow as tf
 import inference
 import numpy as np
+from math import exp
 
 tf.logging.set_verbosity(tf.logging.ERROR)
 
@@ -71,6 +72,11 @@ def train():
         tf.global_variables_initializer().run()
         coord = tf.train.Coordinator()
         threads = tf.train.start_queue_runners(sess=sess, coord=coord)
+
+        acs = []
+        pres = []
+        recs = []
+        f1s = []
         for i in range(TRAINING_STEPS):
             x_train, y_train = sess.run([x_train_batch, y_train_batch])
             x_train = np.reshape(x_train, [BATCH_SIZE, INPUT_SIZE, INPUT_SIZE, 1])
@@ -82,23 +88,54 @@ def train():
                     "After %d training step(s), loss on training batch is %g."
                     % (step, loss_value))
                 # print('y, y_:', yo, y_train)
-
+                tp = tn = fp = fn = ac = 0
                 x_test, y_test = sess.run([x_test_batch, y_test_batch])
                 x_test = np.reshape(x_test, [TEST_BATCH_SIZE, INPUT_SIZE, INPUT_SIZE, 1])
                 y_test = np.reshape(y_test, [TEST_BATCH_SIZE, 1])
-                accu = sess.run(accuracy, feed_dict={x: x_test, y_:y_test})
-                print("Test accuracy:", accu)
-                # print("Test loss:", test_loss)
-                # print("preditions:", pre)
-                # print("labels:", lab)
+                accu, pred, lab = sess.run([accuracy, preds, labels], feed_dict={x: x_test, y_:y_test})
+                pred_t = np.where(pred == 1)[0]
+                pred_f = np.where(pred == 0)[0]
+                lab_t = np.where(lab == 1)[0]
+                lab_f = np.where(lab == 0)[0]
+                tp += same_num(pred_t, lab_t)
+                fp += same_num(pred_t, lab_f)
+                tn += same_num(pred_f, lab_f)
+                fn += same_num(pred_f, lab_t)
+                ac += accu
 
-        acu = 0
+                acs.append(ac)
+                print('accuracy:', ac)
+                pres.append(tp / (tp + fp + exp(-10)))
+                print('precision:', tp / (tp + fp + exp(-10)))
+                recs.append(tp / (tp + fn + exp(-10)))
+                print('recall:', tp / (tp + fn + exp(-10)))
+                f1s.append(2*tp / (2*tp + fp + fn + exp(-10)))
+                print('f1:', 2*tp / (2*tp + fp + fn + exp(-10)))
+        
+        print('accuracys:', acs)
+        print('precisions:', pres)
+        print('recalls:', recs)
+        print('f1s:', f1s)
+
+        tp = tn = fp = fn = ac = 0
         for i in range(10):
             x_test, y_test = sess.run([x_test_batch, y_test_batch])
             x_test = np.reshape(x_test, [TEST_BATCH_SIZE, INPUT_SIZE, INPUT_SIZE, 1])
             y_test = np.reshape(y_test, [TEST_BATCH_SIZE, 1])
-            accu += sess.run(accuracy, feed_dict={x: x_test, y_:y_test})
-        print("Test accuracy:", accu / 10)
+            accu, pred, lab = sess.run([accuracy, preds, labels], feed_dict={x: x_test, y_:y_test})
+            pred_t = np.where(pred == 1)[0]
+            pred_f = np.where(pred == 0)[0]
+            lab_t = np.where(lab == 1)[0]
+            lab_f = np.where(lab == 0)[0]
+            tp += same_num(pred_t, lab_t)
+            fp += same_num(pred_t, lab_f)
+            tn += same_num(pred_f, lab_f)
+            fn += same_num(pred_f, lab_t)
+            ac += accu
+        print('accuracy:', ac / 10)
+        print('precision:', tp / (tp + fp + exp(-10)))
+        print('recall:', tp / (tp + fn + exp(-10)))
+        print('f1:', 2*tp / (2*tp + fp + fn + exp(-10)))
         saver.save(sess, './my_net.ckpt')
 
         coord.request_stop()
@@ -126,6 +163,14 @@ def get_data(filename, bs):
     
     return img_batch, label_batch
 
+def same_num(a, b):
+    result = 0
+    for i in range(len(a)):
+        for j in range(len(b)):
+            if a[i] == b[j]:
+                result += 1
+                continue
+    return result
 
 def main(argv=None):
     train()

@@ -118,5 +118,5 @@ def over_sampling(words, labels):
     
 
 
-# image_words_prep(IMG_DIR)
+image_words_prep(IMG_DIR, True)
 image_words_prep(TEST_IMG_DIR, False)

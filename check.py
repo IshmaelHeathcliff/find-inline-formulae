@@ -7,11 +7,12 @@ import numpy as np
 import sys
 import inference
 import tensorflow as tf
+from math import exp
 
 tf.logging.set_verbosity(tf.logging.ERROR)
 
 INPUT_SIZE = 50
-TEST_DATA = 'dataset/test.tfrecords'
+TEST_DATA = 'dataset/train.tfrecords-4'
 TEST_BATCH_SIZE = 1000
 MOVING_AVERAGE_DECAY = 0.99
 
@@ -39,13 +40,25 @@ def evaluate():
         threads = tf.train.start_queue_runners(sess=sess, coord=coord)
         saver.restore(sess, 'my_net.ckpt')
         
-        accu = 0
+        tp = tn = fp = fn = ac = 0
         for i in range(10):
             x_test, y_test = sess.run([x_test_batch, y_test_batch])
             x_test = np.reshape(x_test, [TEST_BATCH_SIZE, INPUT_SIZE, INPUT_SIZE, 1])
             y_test = np.reshape(y_test, [TEST_BATCH_SIZE, 1])
-            accu += sess.run(accuracy, feed_dict={x: x_test, y_:y_test})
-        print("Test accuracy:", accu / 10)
+            accu, pred, lab= sess.run([accuracy, preds, labels], feed_dict={x: x_test, y_:y_test})
+            pred_t = np.where(pred == 1)[0]
+            pred_f = np.where(pred == 0)[0]
+            lab_t = np.where(lab == 1)[0]
+            lab_f = np.where(lab == 0)[0]
+            tp += same_num(pred_t, lab_t)
+            fp += same_num(pred_t, lab_f)
+            tn += same_num(pred_f, lab_f)
+            fn += same_num(pred_f, lab_t)
+            ac += accu
+        print('accuracy:', ac / 10)
+        print('precision:', tp / (tp + fp + exp(-10)))
+        print('recall:', tp / (tp + fn + exp(-10)))
+        print('f1:', 2*tp / (2*tp + fp + fn + exp(-10)))
 
         coord.request_stop()
         coord.join(threads)
@@ -70,5 +83,14 @@ def get_data(filename, bs):
     img_batch, label_batch = tf.train.shuffle_batch([img, label], batch_size=bs, capacity=1000, num_threads=2, min_after_dequeue= 10)
     
     return img_batch, label_batch
+
+def same_num(a, b):
+    result = 0
+    for i in range(len(a)):
+        for j in range(len(b)):
+            if a[i] == b[j]:
+                result += 1
+                continue
+    return result
 
 evaluate()
