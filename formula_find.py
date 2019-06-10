@@ -12,6 +12,8 @@ import tensorflow as tf
 
 tf.logging.set_verbosity(tf.logging.ERROR)
 
+NET = 'os/my_net.ckpt'
+
 def main(img):
     im_init = Image.open(img).convert('RGB')
     im, start = iu.crop_border(img, False)
@@ -78,7 +80,7 @@ def main(img):
 
 # ==================================================
 
-    im_init.show()
+    im_init.save('out.png')
     
 
 def net_check(im):
@@ -89,7 +91,7 @@ def net_check(im):
     saver = tf.train.Saver(tf.global_variables(), variable_averages.variables_to_restore())
     with tf.Session() as sess:
         tf.global_variables_initializer().run()
-        saver.restore(sess, 'my_net.ckpt')
+        saver.restore(sess, NET)
         pre = sess.run(tf.cast(tf.greater(y, 0), tf.int32), feed_dict={x:im})
         return pre
 

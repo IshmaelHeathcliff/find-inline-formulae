@@ -15,11 +15,11 @@ TEST_DATA = 'dataset/test.tfrecords'
 INPUT_SIZE = 50
 BATCH_SIZE = 100
 TEST_BATCH_SIZE = 1000
-DATA_NUM =  1000
+DATA_NUM =  100
 LEARNING_RATE_BASE = 0.01
 LEARNING_RATE_DECAY = 0.9
 REGULARIZATION_RATE = 0.0001
-TRAINING_STEPS = 50000
+TRAINING_STEPS = 10000
 MOVING_AVERAGE_DECAY = 0.99
 
 
@@ -48,7 +48,7 @@ def train():
     accuracy = tf.reduce_mean(tf.cast(tf.equal(preds, labels), tf.float32))
 
     # 损失函数
-    cross_entropy_mean = tf.reduce_mean(tf.nn.sigmoid_cross_entropy_with_logits(logits=y, labels=y_))
+    cross_entropy_mean = tf.reduce_mean(tf.nn.weighted_cross_entropy_with_logits(logits=y, targets=y_, pos_weight=0.5))
     loss = cross_entropy_mean  + tf.add_n(tf.get_collection('losses')) # 损失加上正则化
 
     # 指数衰减学习率
@@ -83,7 +83,7 @@ def train():
             y_train = np.reshape(y_train, [BATCH_SIZE, 1])
             _, loss_value, step, yo = sess.run([train_op, loss, global_step, y], feed_dict={x: x_train, y_: y_train})
 
-            if i % 1000 == 0:
+            if i % 100 == 0:
                 print(
                     "After %d training step(s), loss on training batch is %g."
                     % (step, loss_value))

@@ -6,6 +6,7 @@ import sys
 import os
 import image_utils as iu
 from PIL import Image
+from imblearn.under_sampling import AllKNN
 
 IMG_DIR = 'dataset/2003/Train'
 TEST_IMG_DIR = 'test/Images'
@@ -52,12 +53,12 @@ def image_words_prep(IMG_DIR, train=True):
                     lines_words = [x.resize((50, 50)) for x in lines_words]
                     im_labels = flat2d(im_labels)
                     if train == True:
-                        lines_words, im_labels = over_sampling(lines_words, im_labels)
+                        lines_words, im_labels = under_sampling(lines_words, im_labels)
                 else:
                     continue
             except Exception as e:
                 print(di + nf)
-                continue
+                raise e
             images.extend(lines_words)
             labels.extend(im_labels)
             count += len(lines_words)
@@ -94,6 +95,26 @@ def image_words_prep(IMG_DIR, train=True):
     print("the number of this tfrecord data:", count)
     os.chdir('../')
 
+def under_sampling(words, labels):
+    class0 = []
+    class1 = []
+    for i in range(len(labels)):
+        if labels[i] == 0:
+            class0.append((words[i], 0))
+        elif labels[i] == 1:
+            class1.append((words[i], 1))
+    
+    if len(class1) == 0:
+        return words, labels
+    np.random.shuffle(class0)
+    class0 = class0[0:len(class1)]
+
+    class0.extend(class1)
+    np.random.shuffle(class0)
+    words = [x[0] for x in class0]
+    labels = [x[1] for x in class0]
+    return words, labels
+
 def over_sampling(words, labels):
     class0 = []
     class1 = []
@@ -115,8 +136,6 @@ def over_sampling(words, labels):
     words = [x[0] for x in class0]
     labels = [x[1] for x in class0]
     return words, labels
-    
 
-
-image_words_prep(IMG_DIR, True)
-image_words_prep(TEST_IMG_DIR, False)
+image_words_prep(IMG_DIR)
+# image_words_prep(TEST_IMG_DIR, False)

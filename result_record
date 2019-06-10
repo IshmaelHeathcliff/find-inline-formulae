@@ -1,0 +1,23 @@
+{
+    15w train images, 1w test images
+    under-sampling
+    100 batch, 10000 times training
+    loss pos_weight = 1
+
+    accuracy: 0.8605999946594238
+    precision: 0.4884361111371337
+    recall: 0.6560650667268432
+    f1: 0.5599747394498694
+}
+
+{
+    15w train images, 1w test images
+    under-sampling
+    100 batch, 10000 times training
+    loss pos_weight = 0.5
+
+    accuracy: 0.8967999994754792
+    precision: 0.6209494889291158
+    recall: 0.6090169788253303
+    f1: 0.6149253627173253
+}
