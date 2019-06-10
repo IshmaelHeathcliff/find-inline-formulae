@@ -8,7 +8,7 @@ import image_utils as iu
 from PIL import Image
 
 IMG_DIR = 'dataset/2003/Train'
-TEST_IMG_DIR = 'test/Images'
+TEST_IMG_DIR = 'dataset/test'
 OUT_PATH = 'train.tfrecords'
 
 
