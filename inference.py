@@ -11,15 +11,18 @@ NUM_LABELS = 1
 CONV1_DEEP = 32
 CONV1_SIZE = 3
 
-CONV2_DEEP = 64
+CONV2_DEEP = 32
 CONV2_SIZE = 3
 
-CONV3_DEEP = 128
+CONV3_DEEP = 64
 CONV3_SIZE = 3
+
+CONV4_DEEP = 128
+CONV4_SIZE = 3
 
 BINS = [3, 2, 1]
 FC1_SIZE = 14*128
-FC2_SIZE = 256
+FC2_SIZE = 128
 
 
 def inference(input_tensor, avg, train, regularizer):
@@ -41,10 +44,7 @@ def inference(input_tensor, avg, train, regularizer):
         bn1 = tf.layers.batch_normalization(conv1, training=train)
         prelu1 = prelu(tf.nn.bias_add(bn1, conv1_biases), avg)
 
-    with tf.variable_scope('layer2-pool1', reuse=tf.AUTO_REUSE):
-        pool1 = tf.nn.max_pool(prelu1, ksize=(1,2,2,1), strides=(1,2,2,1), padding='SAME')
-
-    with tf.variable_scope("layer3-conv2", reuse=tf.AUTO_REUSE):
+    with tf.variable_scope('layer2-conv2', reuse=tf.AUTO_REUSE):
         conv2_weights = tf.get_variable(
             "weight", [CONV2_SIZE, CONV2_SIZE, CONV1_DEEP, CONV2_DEEP],
             initializer=tf.contrib.layers.variance_scaling_initializer())
@@ -55,17 +55,17 @@ def inference(input_tensor, avg, train, regularizer):
             conv2_weights = avg.average(conv2_weights)
             conv2_biases = avg.average(conv2_biases)
 
-        conv2 = tf.nn.conv2d(pool1,
+        conv2 = tf.nn.conv2d(prelu1,
                              conv2_weights,
                              strides=[1, 1, 1, 1],
                              padding='VALID')
         bn2 = tf.layers.batch_normalization(conv2, training=train)
         prelu2 = prelu(tf.nn.bias_add(bn2, conv2_biases), avg)
 
-    with tf.variable_scope('layer4-pool2', reuse=tf.AUTO_REUSE):
-        pool2 = tf.nn.max_pool(prelu2, ksize=(1,2,2,1), strides=(1,2,2,1), padding='SAME')
+    with tf.variable_scope('layer3-pool1', reuse=tf.AUTO_REUSE):
+        pool1 = tf.nn.max_pool(prelu2, ksize=(1,2,2,1), strides=(1,2,2,1), padding='SAME')
 
-    with tf.variable_scope("layer5-conv3", reuse=tf.AUTO_REUSE):
+    with tf.variable_scope("layer4-conv3", reuse=tf.AUTO_REUSE):
         conv3_weights = tf.get_variable(
             "weight", [CONV3_SIZE, CONV3_SIZE, CONV2_DEEP, CONV3_DEEP],
             initializer=tf.contrib.layers.variance_scaling_initializer())
@@ -76,17 +76,38 @@ def inference(input_tensor, avg, train, regularizer):
             conv3_weights = avg.average(conv3_weights)
             conv3_biases = avg.average(conv3_biases)
 
-        conv3 = tf.nn.conv2d(pool2,
+        conv3 = tf.nn.conv2d(pool1,
                              conv3_weights,
                              strides=[1, 1, 1, 1],
                              padding='VALID')
         bn3 = tf.layers.batch_normalization(conv3, training=train)
         prelu3 = prelu(tf.nn.bias_add(bn3, conv3_biases), avg)
 
-    with tf.variable_scope('layer6-spp', reuse=tf.AUTO_REUSE):
-        spp = Spp_layer(prelu3, BINS)
+    with tf.variable_scope('layer5-pool2', reuse=tf.AUTO_REUSE):
+        pool2 = tf.nn.max_pool(prelu3, ksize=(1,2,2,1), strides=(1,2,2,1), padding='SAME')
 
-    with tf.variable_scope('layer7-fc1', reuse=tf.AUTO_REUSE):
+    with tf.variable_scope("layer6-conv4", reuse=tf.AUTO_REUSE):
+        conv4_weights = tf.get_variable(
+            "weight", [CONV4_SIZE, CONV4_SIZE, CONV3_DEEP, CONV4_DEEP],
+            initializer=tf.contrib.layers.variance_scaling_initializer())
+        conv4_biases = tf.get_variable(
+            "bias", [CONV4_DEEP], initializer=tf.constant_initializer(0.0))
+
+        if avg is not None:
+            conv4_weights = avg.average(conv4_weights)
+            conv4_biases = avg.average(conv4_biases)
+
+        conv4 = tf.nn.conv2d(pool2,
+                             conv4_weights,
+                             strides=[1, 1, 1, 1],
+                             padding='VALID')
+        bn4 = tf.layers.batch_normalization(conv4, training=train)
+        prelu4 = prelu(tf.nn.bias_add(bn4, conv4_biases), avg)
+
+    with tf.variable_scope('layer7-spp', reuse=tf.AUTO_REUSE):
+        spp = Spp_layer(prelu4, BINS)
+
+    with tf.variable_scope('layer8-fc1', reuse=tf.AUTO_REUSE):
         fc1_weights = tf.get_variable(
             "weight", [FC1_SIZE, FC2_SIZE],
             initializer=tf.contrib.layers.variance_scaling_initializer())
@@ -102,7 +123,7 @@ def inference(input_tensor, avg, train, regularizer):
         fc1 = prelu(tf.matmul(spp, fc1_weights) + fc1_biases, avg)
         if train: fc1 = tf.nn.dropout(fc1, 0.5)
 
-    with tf.variable_scope('layer8-fc2', reuse=tf.AUTO_REUSE):
+    with tf.variable_scope('layer9-fc2', reuse=tf.AUTO_REUSE):
         fc2_weights = tf.get_variable(
             "weight", [FC2_SIZE, NUM_LABELS],
             initializer=tf.contrib.layers.variance_scaling_initializer())

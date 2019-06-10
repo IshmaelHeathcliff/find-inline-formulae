@@ -220,6 +220,22 @@ def crop_words(im, save_words=False): # 获得单行单词信息及图片
     if im_blanks[-1][1] != col:
         im_words.append([im_blanks[-1][1], col])
 
+# ========================================================
+# 将长单词切割为多个短图片
+    i = 0
+    up = len(im_words)
+    while i < up:
+        if im_words[i][1] - im_words[i][0] >= 2 * lin:
+            im_words.append([im_words[i][0], im_words[i][0] + lin])
+            im_words.append([im_words[i][0] + lin, im_words[i][1]])
+            del im_words[i]
+            up += 1
+        else:
+            i +=1
+
+    im_words.sort()
+# =============================================================
+    
     i = 0
     up = len(im_words)
     while i < up:

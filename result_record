@@ -21,3 +21,23 @@
     recall: 0.6090169788253303
     f1: 0.6149253627173253
 }
+
+{
+    22w train images,  23810 test images
+    under-sampling
+    100 batch, 10000 times training
+    loss pos_weight = 0.5
+
+    accuracy: 0.8958000004291534
+    precision: 0.6186829800243768
+    recall: 0.5976331160262562
+    f1: 0.6079759113611499
+}
+
+{
+    638976 train images,  23810 test images
+    under-sampling
+    100 batch, 50000 times training
+    loss pos_weight = 0.5
+
+}

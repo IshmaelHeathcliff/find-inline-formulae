@@ -6,7 +6,6 @@ import sys
 import os
 import image_utils as iu
 from PIL import Image
-from imblearn.under_sampling import AllKNN
 
 IMG_DIR = 'dataset/2003/Train'
 TEST_IMG_DIR = 'test/Images'

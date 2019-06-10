@@ -19,7 +19,7 @@ DATA_NUM =  100
 LEARNING_RATE_BASE = 0.01
 LEARNING_RATE_DECAY = 0.9
 REGULARIZATION_RATE = 0.0001
-TRAINING_STEPS = 10000
+TRAINING_STEPS = 50000
 MOVING_AVERAGE_DECAY = 0.99
 
 
@@ -83,7 +83,7 @@ def train():
             y_train = np.reshape(y_train, [BATCH_SIZE, 1])
             _, loss_value, step, yo = sess.run([train_op, loss, global_step, y], feed_dict={x: x_train, y_: y_train})
 
-            if i % 100 == 0:
+            if i % 1000 == 0:
                 print(
                     "After %d training step(s), loss on training batch is %g."
                     % (step, loss_value))
@@ -118,7 +118,7 @@ def train():
         print('f1s:', f1s)
 
         tp = tn = fp = fn = ac = 0
-        for i in range(10):
+        for i in range(20):
             x_test, y_test = sess.run([x_test_batch, y_test_batch])
             x_test = np.reshape(x_test, [TEST_BATCH_SIZE, INPUT_SIZE, INPUT_SIZE, 1])
             y_test = np.reshape(y_test, [TEST_BATCH_SIZE, 1])
@@ -132,7 +132,7 @@ def train():
             tn += same_num(pred_f, lab_f)
             fn += same_num(pred_f, lab_t)
             ac += accu
-        print('accuracy:', ac / 10)
+        print('accuracy:', ac / 20)
         print('precision:', tp / (tp + fp + exp(-10)))
         print('recall:', tp / (tp + fn + exp(-10)))
         print('f1:', 2*tp / (2*tp + fp + fn + exp(-10)))
