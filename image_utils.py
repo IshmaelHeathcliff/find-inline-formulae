@@ -115,13 +115,15 @@ def crop_lines(im, save_line_im=False, check_rotate=True): # 获得文行信息
         line_end = lines_index_end[i]
         line_mid = (line_start + line_end) // 2
         line_height = line_end - line_start
+        line_sum = np.mean(im_sum[line_start:line_end])
+        line_quater_sum = np.mean(im_quarter_sum[line_start:line_end])
         im_lines.append([
             lines_index_start[i], 
             lines_index_end[i], 
             line_mid, 
             line_height,
-            im_sum[line_mid], 
-            im_quarter_sum[line_mid], 
+            line_sum, 
+            line_quater_sum, 
             im_sum[line_start], 
             im_sum[line_end - 1]
         ])
@@ -130,13 +132,21 @@ def crop_lines(im, save_line_im=False, check_rotate=True): # 获得文行信息
 
     # 筛选
     heights = [im_lines[i][3] for i in range(lines)]
-    height_mean, _ = min_square(heights)
+    height_mean, std = min_square(heights)
+    # print(heights, height_mean, std)
+    if std < 0.25 * height_mean:
+        height_mean = height_mean * 1.5
+    else:
+        height_mean += std
     height_down = np.percentile(heights, 10)
     # print([im_lines[i][5] for i in range(lines)])
+    # print([im_lines[i][4] for i in range(lines)])
+
+    # 筛选文行，造训练数据时严格，实际使用可放松
     while (i < lines):
-        if im_lines[i][3] > height_mean or \
+        if (im_lines[i][3] > height_mean and im_lines[i][5] < 0.13) or \
+                (im_lines[i][5] < 0.08 and im_lines[i][4] < 0.13) or \
                 im_lines[i][3] < height_down * 0.9 or \
-                im_lines[i][5] < 0.2 or \
                 im_lines[i][4] > 0.8 or \
                 im_lines[i][6] > 0.8 or \
                 im_lines[i][7] > 0.8 or \
@@ -198,12 +208,17 @@ def crop_words(im, save_words=False): # 获得单行单词信息及图片
     if len(im_blanks) == 0:
         return [[0, col]], [im]
     wids = [im_blanks[i][2] for i in range(len(im_blanks))]
-    # 将最大的空白宽度改为次大
-    max_wid = max(wids)
-    max_ind = wids.index(max_wid)
-    wids[max_ind] = 0
+    # 将最大的两个空白宽度改为次大
+    max_wid1 = max(wids)
+    max_ind1 = wids.index(max_wid1)
+    wids[max_ind1] = 0
+    max_wid2 = max(wids)
+    max_ind2 = wids.index(max_wid2)
+    wids[max_ind2] = 0
+    
     inf_max_wid = max(wids)
-    wids[max_ind] = inf_max_wid
+    wids[max_ind1] = inf_max_wid
+    wids[max_ind2] = inf_max_wid
     wids = np.asarray(wids)
 
     wid_mean = 0

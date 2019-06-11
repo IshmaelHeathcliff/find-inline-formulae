@@ -453,55 +453,6 @@
       \verb http://jmlr.org/papers/v15/srivastava14a.html
       \endverb
     \endentry
-    \entry{msra}{article}{}
-      \name{author}{4}{}{%
-        {{hash=6b4b60e909e78633945f3f9c9dc83e01}{%
-           family={He},
-           familyi={H\bibinitperiod},
-           given={Kaiming},
-           giveni={K\bibinitperiod}}}%
-        {{hash=5e72bc22dbcf0984c6d113d280e36990}{%
-           family={Zhang},
-           familyi={Z\bibinitperiod},
-           given={Xiangyu},
-           giveni={X\bibinitperiod}}}%
-        {{hash=bb295293acacd54387339079ebbe4ead}{%
-           family={Ren},
-           familyi={R\bibinitperiod},
-           given={Shaoqing},
-           giveni={S\bibinitperiod}}}%
-        {{hash=f85751488058842b5777c7b4074077b5}{%
-           family={Sun},
-           familyi={S\bibinitperiod},
-           given={Jian},
-           giveni={J\bibinitperiod}}}%
-      }
-      \strng{namehash}{3733dbdff90171390240438fddfbc952}
-      \strng{fullhash}{42c4b52dc3a62cebabbc11c73e1afb53}
-      \strng{bibnamehash}{3733dbdff90171390240438fddfbc952}
-      \strng{authorbibnamehash}{3733dbdff90171390240438fddfbc952}
-      \strng{authornamehash}{3733dbdff90171390240438fddfbc952}
-      \strng{authorfullhash}{42c4b52dc3a62cebabbc11c73e1afb53}
-      \field{sortinit}{1}
-      \field{sortinithash}{2174f786c6195e7fe2ee1c229b416e29}
-      \field{labelnamesource}{author}
-      \field{labeltitlesource}{title}
-      \field{eprinttype}{arXiv}
-      \field{journaltitle}{CoRR}
-      \field{title}{Delving Deep into Rectifiers: Surpassing Human-Level Performance on ImageNet Classification}
-      \field{userf}{en}
-      \field{volume}{abs/1502.01852}
-      \field{year}{2015}
-      \verb{eprint}
-      \verb 1502.01852
-      \endverb
-      \verb{urlraw}
-      \verb http://arxiv.org/abs/1502.01852
-      \endverb
-      \verb{url}
-      \verb http://arxiv.org/abs/1502.01852
-      \endverb
-    \endentry
     \entry{ctpn}{article}{}
       \name{author}{5}{}{%
         {{hash=bc421e5244d81fc563e27ed9bfb33faf}{%
@@ -554,6 +505,55 @@
       \endverb
       \verb{url}
       \verb http://arxiv.org/abs/1609.03605
+      \endverb
+    \endentry
+    \entry{msra}{article}{}
+      \name{author}{4}{}{%
+        {{hash=6b4b60e909e78633945f3f9c9dc83e01}{%
+           family={He},
+           familyi={H\bibinitperiod},
+           given={Kaiming},
+           giveni={K\bibinitperiod}}}%
+        {{hash=5e72bc22dbcf0984c6d113d280e36990}{%
+           family={Zhang},
+           familyi={Z\bibinitperiod},
+           given={Xiangyu},
+           giveni={X\bibinitperiod}}}%
+        {{hash=bb295293acacd54387339079ebbe4ead}{%
+           family={Ren},
+           familyi={R\bibinitperiod},
+           given={Shaoqing},
+           giveni={S\bibinitperiod}}}%
+        {{hash=f85751488058842b5777c7b4074077b5}{%
+           family={Sun},
+           familyi={S\bibinitperiod},
+           given={Jian},
+           giveni={J\bibinitperiod}}}%
+      }
+      \strng{namehash}{3733dbdff90171390240438fddfbc952}
+      \strng{fullhash}{42c4b52dc3a62cebabbc11c73e1afb53}
+      \strng{bibnamehash}{3733dbdff90171390240438fddfbc952}
+      \strng{authorbibnamehash}{3733dbdff90171390240438fddfbc952}
+      \strng{authornamehash}{3733dbdff90171390240438fddfbc952}
+      \strng{authorfullhash}{42c4b52dc3a62cebabbc11c73e1afb53}
+      \field{sortinit}{1}
+      \field{sortinithash}{2174f786c6195e7fe2ee1c229b416e29}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{eprinttype}{arXiv}
+      \field{journaltitle}{CoRR}
+      \field{title}{Delving Deep into Rectifiers: Surpassing Human-Level Performance on ImageNet Classification}
+      \field{userf}{en}
+      \field{volume}{abs/1502.01852}
+      \field{year}{2015}
+      \verb{eprint}
+      \verb 1502.01852
+      \endverb
+      \verb{urlraw}
+      \verb http://arxiv.org/abs/1502.01852
+      \endverb
+      \verb{url}
+      \verb http://arxiv.org/abs/1502.01852
       \endverb
     \endentry
   \enddatalist

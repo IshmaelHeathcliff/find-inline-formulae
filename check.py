@@ -12,7 +12,7 @@ from math import exp
 tf.logging.set_verbosity(tf.logging.ERROR)
 
 INPUT_SIZE = 50
-TEST_DATA = 'dataset/train.tfrecords-1'
+TEST_DATA = 'dataset/test.tfrecords'
 TEST_BATCH_SIZE = 1000
 MOVING_AVERAGE_DECAY = 0.99
 NET = 'my_net.ckpt'

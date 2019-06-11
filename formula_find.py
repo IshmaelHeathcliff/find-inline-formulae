@@ -102,10 +102,10 @@ def flat2d(lis):
         out_lis.extend(lis[i])
     return out_lis
 
-
-# main(sys.argv[1], 'out.png')
-
-for i in range(47):
-    main('dataset/test/0201001_images/nf/' + str(i+1) + '.png', str(i+1) + '.png')
+if len(sys.argv) == 2:
+    main(sys.argv[1], 'out.png')
+else:
+    for i in range(47):
+        main('dataset/test/0201001_images/nf/' + str(i+1) + '.png', str(i+1) + '.png')
 
 

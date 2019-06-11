@@ -1,15 +1,15 @@
 [0] Config.pm:302> INFO - This is Biber 2.11
 [1] Config.pm:305> INFO - Logfile is 'thesis.blg'
-[34] biber-MSWIN32:313> INFO - === 
-[63] Biber.pm:371> INFO - Reading 'thesis.bcf'
-[155] Biber.pm:857> INFO - Found 11 citekeys in bib section 0
-[168] Biber.pm:3976> INFO - Processing section 0
-[180] Biber.pm:4136> INFO - Looking for bibtex format file 'ref.bib' for section 0
-[184] bibtex.pm:1500> INFO - LaTeX decoding ...
-[204] bibtex.pm:1316> INFO - Found BibTeX data source 'ref.bib'
-[339] UCollate.pm:68> INFO - Overriding locale 'zh__pinyin' defaults 'normalization = NFD' with 'normalization = prenormalized'
-[339] UCollate.pm:68> INFO - Overriding locale 'zh__pinyin' defaults 'variable = shifted' with 'variable = non-ignorable'
-[340] Biber.pm:3804> INFO - Sorting list 'none/global//global/global' of type 'entry' with template 'none' and locale 'zh__pinyin'
-[352] bbl.pm:617> INFO - Writing 'thesis.bbl' with encoding 'UTF-8'
-[352] bbl.pm:618> INFO - Converting UTF-8 to TeX macros on output to .bbl
-[364] bbl.pm:720> INFO - Output to thesis.bbl
+[29] biber-MSWIN32:313> INFO - === 
+[50] Biber.pm:371> INFO - Reading 'thesis.bcf'
+[148] Biber.pm:857> INFO - Found 11 citekeys in bib section 0
+[160] Biber.pm:3976> INFO - Processing section 0
+[172] Biber.pm:4136> INFO - Looking for bibtex format file 'ref.bib' for section 0
+[176] bibtex.pm:1500> INFO - LaTeX decoding ...
+[196] bibtex.pm:1316> INFO - Found BibTeX data source 'ref.bib'
+[301] UCollate.pm:68> INFO - Overriding locale 'zh__pinyin' defaults 'normalization = NFD' with 'normalization = prenormalized'
+[302] UCollate.pm:68> INFO - Overriding locale 'zh__pinyin' defaults 'variable = shifted' with 'variable = non-ignorable'
+[302] Biber.pm:3804> INFO - Sorting list 'none/global//global/global' of type 'entry' with template 'none' and locale 'zh__pinyin'
+[315] bbl.pm:617> INFO - Writing 'thesis.bbl' with encoding 'UTF-8'
+[315] bbl.pm:618> INFO - Converting UTF-8 to TeX macros on output to .bbl
+[326] bbl.pm:720> INFO - Output to thesis.bbl

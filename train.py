@@ -19,7 +19,7 @@ DATA_NUM =  100
 LEARNING_RATE_BASE = 0.01
 LEARNING_RATE_DECAY = 0.9
 REGULARIZATION_RATE = 0.0001
-TRAINING_STEPS = 50000
+TRAINING_STEPS = 100000
 MOVING_AVERAGE_DECAY = 0.99
 
 
@@ -83,16 +83,17 @@ def train():
             y_train = np.reshape(y_train, [BATCH_SIZE, 1])
             _, loss_value, step, yo = sess.run([train_op, loss, global_step, y], feed_dict={x: x_train, y_: y_train})
 
-            if i % 500 == 0:
+            if i % 1000 == 0:
                 print(
                     "After %d training step(s), loss on training batch is %g."
                     % (step, loss_value))
                 # print('y, y_:', yo, y_train)
                 tp = tn = fp = fn = ac = 0
                 x_test, y_test = sess.run([x_test_batch, y_test_batch])
+                lab = y_test
                 x_test = np.reshape(x_test, [TEST_BATCH_SIZE, INPUT_SIZE, INPUT_SIZE, 1])
                 y_test = np.reshape(y_test, [TEST_BATCH_SIZE, 1])
-                accu, pred, lab = sess.run([accuracy, preds, labels], feed_dict={x: x_test, y_:y_test})
+                accu, pred= sess.run([accuracy, preds], feed_dict={x: x_test, y_:y_test})
                 pred_t = np.where(pred == 1)[0]
                 pred_f = np.where(pred == 0)[0]
                 lab_t = np.where(lab == 1)[0]
@@ -169,7 +170,7 @@ def same_num(a, b):
         for j in range(len(b)):
             if a[i] == b[j]:
                 result += 1
-                continue
+                break
     return result
 
 def main(argv=None):
