@@ -99,6 +99,7 @@ def crop_lines(im, save_line_im=False, check_rotate=True): # 获得文行信息
     im_quarter_reverse = np.where(im_quarter_data != 255, 1 / (col // 4), 0.)
     im_quarter_sum = np.sum(im_quarter_reverse, axis=1)
 
+    # 每行位置
     lines_index_start = [0]
     lines_index_end = []
     for i in range(1, len(im_sum)):
@@ -115,19 +116,27 @@ def crop_lines(im, save_line_im=False, check_rotate=True): # 获得文行信息
         line_mid = (line_start + line_end) // 2
         line_height = line_end - line_start
         im_lines.append([
-            lines_index_start[i], lines_index_end[i], line_mid, line_height,
-            im_sum[line_mid], im_quarter_sum[line_mid], im_sum[line_start], im_sum[line_end - 1]
+            lines_index_start[i], 
+            lines_index_end[i], 
+            line_mid, 
+            line_height,
+            im_sum[line_mid], 
+            im_quarter_sum[line_mid], 
+            im_sum[line_start], 
+            im_sum[line_end - 1]
         ])
     i = 0
     lines = len(im_lines)
 
+    # 筛选
     heights = [im_lines[i][3] for i in range(lines)]
+    height_mean, _ = min_square(heights)
     height_down = np.percentile(heights, 10)
-    height_up = np.percentile(heights, 90)
+    # print([im_lines[i][5] for i in range(lines)])
     while (i < lines):
-        if im_lines[i][3] > height_up * 1.25 or \
+        if im_lines[i][3] > height_mean or \
                 im_lines[i][3] < height_down * 0.9 or \
-                (im_lines[i][4] < 0.15 and im_lines[i][5] < 0.15) or \
+                im_lines[i][5] < 0.2 or \
                 im_lines[i][4] > 0.8 or \
                 im_lines[i][6] > 0.8 or \
                 im_lines[i][7] > 0.8 or \
@@ -187,6 +196,14 @@ def crop_words(im, save_words=False): # 获得单行单词信息及图片
 
     # 找出非字母间隔的空白
     wids = np.asarray([im_blanks[i][2] for i in range(len(im_blanks))])
+    # 将最大的空白宽度改为次大
+    max_wid = max(wids)
+    max_ind = wids.index(max_wid)
+    wids[max_ind] = 0
+    inf_max_wid = max(wids)
+    wids[max_ind] = inf_max_wid
+    wids = np.asarray(wids)
+
     wid_mean = 0
     if len(wids) != 0:
         wid_mean, std = min_square(wids)
@@ -263,10 +280,11 @@ def min_square(lis): # 最小二乘法
     if mi == ma:
         return lis, 0
 
+    li = mi
     for i in range(ma - mi):
-        sq = np.sum((lis - mi)**2)
+        sq = np.sum((lis - li)**2)
         out_lis.append(math.sqrt(sq / num))
-        mi += 1
+        li += 1
     out = out_lis.index(min(out_lis))
-    return out, out_lis[out]
+    return mi + out, out_lis[out]
 

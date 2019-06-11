@@ -37,17 +37,17 @@
 
 % 设定文档的基本信息。
 \pkuthssinfo{
-	cthesisname = {本科生毕业论文}, ethesisname = {Doctor Thesis},
+	cthesisname = {本科生毕业论文}, ethesisname = {Bachelor Thesis},
 	ctitle = {论文图片中定位行内公式}, etitle = {Find Inline Formulae in Pictures of Theses},
 	cauthor = {张浩然},
 	eauthor = {Zhang Haoran},
 	studentid = {1500010684},
 	date = {2019年6月},
 	school = {数学科学院},
-	cmajor = {信息科学系}, emajor = {Some Major},
+	cmajor = {信息科学系}, emajor = {Department of Information Sciences},
 	direction = {深度学习},
-	cmentor = {马尽文教授}, ementor = {Prof.\ Somebody},
-	ckeywords = {神经网络，公式检测}, ekeywords = {First, Second}
+	cmentor = {马尽文教授}, ementor = {Prof.\ Ma Jinwen},
+	ckeywords = {神经网络，公式检测}, ekeywords = {CNN, formula detection}
 }
 % 载入参考文献数据库（注意不要省略“.bib”）。
 \addbibresource{ref.bib}
@@ -77,17 +77,13 @@
 	\include{chap/chap1}
 	\include{chap/chap2}
 	\include{chap/chap3}
+	\include{chap/chap4}
 
 	% 正文中的附录部分。
 	\appendix
 	% 排版参考文献列表。bibintoc 选项使“参考文献”出现在目录中；
 	% 如果同时要使参考文献列表参与章节编号，可将“bibintoc”改为“bibnumbered”。
 	\printbibliography[heading = bibintoc]
-	% 各附录。
-	\include{chap/encl1}
-
-	% 以下为正文之后的部分，默认不进行章节编号。
-	\backmatter
 \end{document}
 
 % vim:ts=4:sw=4

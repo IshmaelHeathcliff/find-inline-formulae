@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.19 (TeX Live 2018/W32TeX) (preloaded format=latex 2018.11.20)  10 JUN 2019 13:46
+This is pdfTeX, Version 3.14159265-2.6-1.40.19 (TeX Live 2018/W32TeX) (preloaded format=latex 2018.11.20)  10 JUN 2019 19:02
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1885,11 +1885,12 @@ File: UTF8.enc 2015/04/18 4.8.4
 (c:/texlive/2018/texmf-dist/tex/latex/cjk/texinput/UTF8/UTF8.chr
 File: UTF8.chr 2015/04/18 4.8.4
 ) (./thesis.aux (./chap/abs.aux) (./chap/chap1.aux) (./chap/chap2.aux) (./chap/
-chap3.aux
+chap3.aux)
+(./chap/chap4.aux
 
 LaTeX Warning: Label `fig:label' multiply defined.
 
-) (./chap/encl1.aux))
+))
 \openout1 = `thesis.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/ntxmi/m/it on input line 55.
@@ -2354,6 +2355,19 @@ File: mynet.eps Graphic file (type eps)
 
  (./chap/chap3.tex
 第三章
+) [11
+
+
+
+]
+\openout2 = `chap/chap4.aux'.
+
+ (./chap/chap4.tex [12
+
+
+
+]
+第四章
 
 Overfull \hbox (20.55074pt too wide) in paragraph at lines 19--20
 []\C70/rm/m/n/12.045/57 ( \C70/rm/m/n/12.045/8b � \C70/rm/m/n/12.045/7e � \C70/
@@ -2372,66 +2386,51 @@ ecision|\C70/rm/m/n/12.045/30 ^^A|
 
 Underfull \vbox (badness 1721) has occurred while \output is active []
 
- [11
-
-
-
-]
+ [13]
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [12]
-[13]
+ [14]
+[15]
 File: rpn.eps Graphic file (type eps)
  <rpn.eps>
 File: ctpn.eps Graphic file (type eps)
- <ctpn.eps>) [14]
+ <ctpn.eps>) [16]
 LaTeX Font Info:    Font shape `T1/ntxtlf/m/it' will be
-(Font)              scaled to size 10.53937pt on input line 85.
+(Font)              scaled to size 10.53937pt on input line 86.
 LaTeX Font Info:    Font shape `T1/ntxtlf/bx/n' in size <10.53937> not availabl
 e
-(Font)              Font shape `T1/ntxtlf/b/n' tried instead on input line 85.
+(Font)              Font shape `T1/ntxtlf/b/n' tried instead on input line 86.
 LaTeX Font Info:    Font shape `T1/ntxtlf/b/n' will be
-(Font)              scaled to size 10.53937pt on input line 85.
-LaTeX Font Info:    Try loading font information for T1+ntxtt on input line 85.
+(Font)              scaled to size 10.53937pt on input line 86.
+LaTeX Font Info:    Try loading font information for T1+ntxtt on input line 86.
 
 
 (c:/texlive/2018/texmf-dist/tex/latex/newtx/t1ntxtt.fd
 File: t1ntxtt.fd 2012/04/20 v3.1
 )
 LaTeX Font Info:    Font shape `T1/ntxtt/m/n' will be
-(Font)              scaled to size 10.53937pt on input line 85.
+(Font)              scaled to size 10.53937pt on input line 86.
 LaTeX Font Info:    Font shape `OT1/ntxtlf/m/n' will be
-(Font)              scaled to size 7.0pt on input line 85.
+(Font)              scaled to size 7.0pt on input line 86.
 LaTeX Font Info:    Font shape `OT1/ntxtlf/m/n' will be
-(Font)              scaled to size 5.0pt on input line 85.
- [15
+(Font)              scaled to size 5.0pt on input line 86.
 
-
-]
-\openout2 = `chap/encl1.aux'.
-
- (./chap/encl1.tex
-[16
-
-
-]
-附录 A
-) [17] [18
-
-
-]
 
 Package caption Warning: Unused \captionsetup[sub] on input line 32.
 See the caption package documentation for explanation.
 
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 91.
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 91.
-(./thesis.aux (./chap/abs.aux) (./chap/chap1.aux) (./chap/chap2.aux)
-(./chap/chap3.aux) (./chap/encl1.aux))
-Package atveryend Info: Empty hook `AtVeryEndDocument' on input line 91.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 91.
+[17
+
+
+]
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 87.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 87.
+ (./thesis.aux (./chap/abs.aux) (./chap/chap1.aux) (./chap/chap2.aux)
+(./chap/chap3.aux) (./chap/chap4.aux))
+Package atveryend Info: Empty hook `AtVeryEndDocument' on input line 87.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 87.
 Package rerunfilecheck Info: File `thesis.out' has not changed.
-(rerunfilecheck)             Checksum: 522ED10886572399F8B6F9D462EBAA81;1838.
+(rerunfilecheck)             Checksum: B3DF32B28CF21A373EA2D6C497A939FD;1877.
 
 
 LaTeX Warning: There were multiply-defined labels.
@@ -2441,12 +2440,12 @@ Package logreq Info: Writing requests to 'thesis.run.xml'.
 
  ) 
 Here is how much of TeX's memory you used:
- 54758 strings out of 492650
- 1162625 string characters out of 6133409
- 1616335 words of memory out of 5000000
- 57716 multiletter control sequences out of 15000+600000
- 689583 words of font info for 350 fonts, out of 8000000 for 9000
+ 54762 strings out of 492650
+ 1162747 string characters out of 6133409
+ 1616409 words of memory out of 5000000
+ 57721 multiletter control sequences out of 15000+600000
+ 690663 words of font info for 354 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  64i,12n,105p,10453b,1760s stack positions out of 5000i,500n,10000p,200000b,80000s
 
-Output written on thesis.dvi (26 pages, 188356 bytes).
+Output written on thesis.dvi (25 pages, 188424 bytes).

@@ -12,7 +12,7 @@ import tensorflow as tf
 
 tf.logging.set_verbosity(tf.logging.ERROR)
 
-NET = 'models/os/my_net.ckpt'
+NET = 'my_net.ckpt'
 
 def main(img, outname):
     im_init = Image.open(img).convert('RGB')
@@ -106,6 +106,6 @@ def flat2d(lis):
 # main(sys.argv[1], 'out.png')
 
 for i in range(47):
-    main('test/Images/0201001_images/nf/' + str(i+1) + '.png', str(i+1) + '.png')
+    main('dataset/test/0201001_images/nf/' + str(i+1) + '.png', str(i+1) + '.png')
 
 
