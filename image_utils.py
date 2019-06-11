@@ -195,7 +195,7 @@ def crop_words(im, save_words=False): # 获得单行单词信息及图片
         im_blanks.append([blank_start[i], blank_end[i], blank_width])
 
     # 找出非字母间隔的空白
-    wids = np.asarray([im_blanks[i][2] for i in range(len(im_blanks))])
+    wids = [im_blanks[i][2] for i in range(len(im_blanks))]
     # 将最大的空白宽度改为次大
     max_wid = max(wids)
     max_ind = wids.index(max_wid)
