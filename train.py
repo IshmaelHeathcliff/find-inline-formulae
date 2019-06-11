@@ -83,7 +83,7 @@ def train():
             y_train = np.reshape(y_train, [BATCH_SIZE, 1])
             _, loss_value, step, yo = sess.run([train_op, loss, global_step, y], feed_dict={x: x_train, y_: y_train})
 
-            if i % 1000 == 0:
+            if i % 500 == 0:
                 print(
                     "After %d training step(s), loss on training batch is %g."
                     % (step, loss_value))

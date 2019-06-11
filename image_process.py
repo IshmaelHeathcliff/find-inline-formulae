@@ -136,5 +136,5 @@ def over_sampling(words, labels):
     labels = [x[1] for x in class0]
     return words, labels
 
-image_words_prep(IMG_DIR)
-# image_words_prep(TEST_IMG_DIR, False)
+# image_words_prep(IMG_DIR)
+image_words_prep(TEST_IMG_DIR, False)
