@@ -90,7 +90,7 @@ def image_words_prep(IMG_DIR, train=True):
                                    'label': _init64_feature(labels[i]),
                                    'img': _bytes_feature(image_raw)}))
         writer.write(example.SerializeToString())
-    writer.close() 
+    writer.close()
     print("the number of this tfrecord data:", count)
     os.chdir('../')
 

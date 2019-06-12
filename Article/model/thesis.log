@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.19 (TeX Live 2018/W32TeX) (preloaded format=latex 2018.11.20)  11 JUN 2019 18:59
+This is pdfTeX, Version 3.14159265-2.6-1.40.19 (TeX Live 2018/W32TeX) (preloaded format=latex 2018.11.20)  12 JUN 2019 16:14
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1884,21 +1884,110 @@ File: UTF8.enc 2015/04/18 4.8.4
 )
 (c:/texlive/2018/texmf-dist/tex/latex/cjk/texinput/UTF8/UTF8.chr
 File: UTF8.chr 2015/04/18 4.8.4
-) (./thesis.aux (./chap/abs.aux) (./chap/chap1.aux) (./chap/chap2.aux) (./chap/
-chap3.aux
+) (./thesis.aux (./chap/copy.aux) (./chap/abs.aux) (./chap/chap1.aux) (./chap/c
+hap2.aux)
+(./chap/chap3.aux
 
 LaTeX Warning: Label `fig:label' multiply defined.
 
 
 LaTeX Warning: Label `fig:label' multiply defined.
 
-) (./chap/chap4.aux))
+
+LaTeX Warning: Label `fig:label' multiply defined.
+
+
+LaTeX Warning: Label `fig:fig1' multiply defined.
+
+
+LaTeX Warning: Label `sub@fig:fig1' multiply defined.
+
+
+LaTeX Warning: Label `fig:fig2' multiply defined.
+
+
+LaTeX Warning: Label `sub@fig:fig2' multiply defined.
+
+
+LaTeX Warning: Label `fig:fig2' multiply defined.
+
+
+LaTeX Warning: Label `sub@fig:fig2' multiply defined.
+
+
+LaTeX Warning: Label `fig:fig4' multiply defined.
+
+
+LaTeX Warning: Label `sub@fig:fig4' multiply defined.
+
+
+LaTeX Warning: Label `fig:label' multiply defined.
+
+
+LaTeX Warning: Label `fig:fig1' multiply defined.
+
+
+LaTeX Warning: Label `sub@fig:fig1' multiply defined.
+
+
+LaTeX Warning: Label `fig:fig2' multiply defined.
+
+
+LaTeX Warning: Label `sub@fig:fig2' multiply defined.
+
+
+LaTeX Warning: Label `fig:label' multiply defined.
+
+
+LaTeX Warning: Label `fig:fig1' multiply defined.
+
+
+LaTeX Warning: Label `sub@fig:fig1' multiply defined.
+
+
+LaTeX Warning: Label `fig:fig2' multiply defined.
+
+
+LaTeX Warning: Label `sub@fig:fig2' multiply defined.
+
+
+LaTeX Warning: Label `fig:fig3' multiply defined.
+
+
+LaTeX Warning: Label `sub@fig:fig3' multiply defined.
+
+
+LaTeX Warning: Label `fig:label' multiply defined.
+
+
+LaTeX Warning: Label `fig:fig1' multiply defined.
+
+
+LaTeX Warning: Label `sub@fig:fig1' multiply defined.
+
+
+LaTeX Warning: Label `fig:fig2' multiply defined.
+
+
+LaTeX Warning: Label `sub@fig:fig2' multiply defined.
+
+
+LaTeX Warning: Label `fig:fig3' multiply defined.
+
+
+LaTeX Warning: Label `sub@fig:fig3' multiply defined.
+
+
+LaTeX Warning: Label `fig:label' multiply defined.
+
+) (./chap/chap4.aux) (./chap/origin.aux))
 \openout1 = `thesis.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/ntxmi/m/it on input line 55.
 LaTeX Font Info:    Try loading font information for OML+ntxmi on input line 55
 .
- (c:/texlive/2018/texmf-dist/tex/latex/newtx/omlntxmi.fd
+
+(c:/texlive/2018/texmf-dist/tex/latex/newtx/omlntxmi.fd
 File: omlntxmi.fd 2015/08/25 Fontinst v1.933 font definitions for OML/ntxmi.
 )
 LaTeX Font Info:    ... okay on input line 55.
@@ -2088,68 +2177,68 @@ your preamble.
  on input line 55.
 
 LaTeX Font Info:    Font shape `T1/ntxtlf/m/n' will be
-(Font)              scaled to size 26.09749pt on input line 62.
+(Font)              scaled to size 26.09749pt on input line 63.
 File: pkulogo.eps Graphic file (type eps)
 <pkulogo.eps>
 File: pkuword.eps Graphic file (type eps)
  <pkuword.eps>
 LaTeX Font Info:    Font shape `T1/ntxtlf/bx/n' in size <26.09749> not availabl
 e
-(Font)              Font shape `T1/ntxtlf/b/n' tried instead on input line 62.
+(Font)              Font shape `T1/ntxtlf/b/n' tried instead on input line 63.
 LaTeX Font Info:    Font shape `T1/ntxtlf/b/n' will be
-(Font)              scaled to size 26.09749pt on input line 62.
-LaTeX Font Info:    Try loading font information for C70+rm on input line 62.
+(Font)              scaled to size 26.09749pt on input line 63.
+LaTeX Font Info:    Try loading font information for C70+rm on input line 63.
 
 (c:/texlive/2018/texmf-dist/tex/latex/ctex/fd/c70rm.fd
 File: c70rm.fd 2018/01/28 v2.4.12 Chinese font definition (CTEX)
 )
 LaTeX Font Info:    Font shape `T1/ntxtlf/m/n' will be
-(Font)              scaled to size 22.08249pt on input line 62.
+(Font)              scaled to size 22.08249pt on input line 63.
 Package CJKpunct Info: use punctuation spaces for family 'rm' with punctstyle (
-quanjiao) on input line 62.
+quanjiao) on input line 63.
 LaTeX Font Info:    Font shape `T1/ntxtlf/bx/n' in size <22.08249> not availabl
 e
-(Font)              Font shape `T1/ntxtlf/b/n' tried instead on input line 62.
+(Font)              Font shape `T1/ntxtlf/b/n' tried instead on input line 63.
 LaTeX Font Info:    Font shape `T1/ntxtlf/b/n' will be
-(Font)              scaled to size 22.08249pt on input line 62.
+(Font)              scaled to size 22.08249pt on input line 63.
 \pkuthss@tmp@linecount=\count450
 LaTeX Font Info:    Font shape `T1/ntxtlf/m/n' will be
-(Font)              scaled to size 16.06pt on input line 62.
+(Font)              scaled to size 16.06pt on input line 63.
 LaTeX Font Info:    Try loading font information for OT1+ntxtlf on input line 6
-2.
+3.
 
 (c:/texlive/2018/texmf-dist/tex/latex/newtx/ot1ntxtlf.fd
 File: ot1ntxtlf.fd 2015/01/17 v1.0 font definition file for OT1/ntx/tlf
 )
 LaTeX Font Info:    Font shape `OT1/ntxtlf/m/n' will be
-(Font)              scaled to size 16.06pt on input line 62.
+(Font)              scaled to size 16.06pt on input line 63.
 LaTeX Font Info:    Font shape `OT1/ntxtlf/m/n' will be
-(Font)              scaled to size 14.05249pt on input line 62.
+(Font)              scaled to size 14.05249pt on input line 63.
 LaTeX Font Info:    Font shape `OT1/ntxtlf/m/n' will be
-(Font)              scaled to size 10.53937pt on input line 62.
-LaTeX Font Info:    Try loading font information for U+ntxmia on input line 62.
+(Font)              scaled to size 10.53937pt on input line 63.
+LaTeX Font Info:    Try loading font information for U+ntxmia on input line 63.
 
 
 (c:/texlive/2018/texmf-dist/tex/latex/newtx/untxmia.fd
 File: untxmia.fd 2016/01/31 Fontinst v1.933 font definitions for U/ntxmia.
 )
-LaTeX Font Info:    Try loading font information for U+ntxsym on input line 62.
+LaTeX Font Info:    Try loading font information for U+ntxsym on input line 63.
 
 
 (c:/texlive/2018/texmf-dist/tex/latex/newtx/untxsym.fd
 File: untxsym.fd 2015/03/20 Fontinst v1.933 font definitions for U/ntxsym.
 )
-LaTeX Font Info:    Try loading font information for U+ntxsyc on input line 62.
+LaTeX Font Info:    Try loading font information for U+ntxsyc on input line 63.
 
 
 (c:/texlive/2018/texmf-dist/tex/latex/newtx/untxsyc.fd
 File: untxsyc.fd 2012/04/12 Fontinst v1.933 font definitions for U/ntxsyc.
 )
 LaTeX Font Info:    Font shape `T1/ntxtlf/bx/n' in size <16.06> not available
-(Font)              Font shape `T1/ntxtlf/b/n' tried instead on input line 62.
+(Font)              Font shape `T1/ntxtlf/b/n' tried instead on input line 63.
 LaTeX Font Info:    Font shape `T1/ntxtlf/b/n' will be
-(Font)              scaled to size 16.06pt on input line 62.
-LaTeX Font Info:    Try loading font information for C70+zhfs on input line 62.
+(Font)              scaled to size 16.06pt on input line 63.
+LaTeX Font Info:    Try loading font information for C70+zhfs on input line 63.
 
 
 (c:/texlive/2018/texmf-dist/tex/latex/zhmetrics/c70zhfs.fd
@@ -2162,7 +2251,7 @@ File: c70zhfs.fd 2009/09/23 4.8.2
 \pkuthss@tmp@linecount=\count455
 \pkuthss@tmp@linecount=\count456
 LaTeX Font Info:    Font shape `T1/ntxtlf/m/n' will be
-(Font)              scaled to size 18.06749pt on input line 62.
+(Font)              scaled to size 18.06749pt on input line 63.
 
 (c:/texlive/2018/texmf-dist/tex/generic/ctex/zhwindowsfonts.tex
 File: zhwindowsfonts.tex 2018/01/28 v2.4.12 Windows font map loader for pdfTeX 
@@ -2175,21 +2264,31 @@ and DVIPDFMx (CTEX)
 ] [2
 
 ]
-\openout2 = `chap/abs.aux'.
+\openout2 = `chap/copy.aux'.
 
 
-(./chap/abs.tex
+(./chap/copy.tex
 LaTeX Font Info:    Font shape `T1/ntxtlf/m/n' will be
-(Font)              scaled to size 24.09pt on input line 4.
+(Font)              scaled to size 24.09pt on input line 31.
 LaTeX Font Info:    Font shape `T1/ntxtlf/bx/n' in size <24.09> not available
-(Font)              Font shape `T1/ntxtlf/b/n' tried instead on input line 4.
+(Font)              Font shape `T1/ntxtlf/b/n' tried instead on input line 31.
 LaTeX Font Info:    Font shape `T1/ntxtlf/b/n' will be
-(Font)              scaled to size 24.09pt on input line 4.
+(Font)              scaled to size 24.09pt on input line 31.
 LaTeX Font Info:    Font shape `T1/ntxtlf/bx/n' in size <18.06749> not availabl
 e
-(Font)              Font shape `T1/ntxtlf/b/n' tried instead on input line 4.
+(Font)              Font shape `T1/ntxtlf/b/n' tried instead on input line 31.
 LaTeX Font Info:    Font shape `T1/ntxtlf/b/n' will be
-(Font)              scaled to size 18.06749pt on input line 4.
+(Font)              scaled to size 18.06749pt on input line 31.
+) [3
+
+
+] [4
+
+
+]
+\openout2 = `chap/abs.aux'.
+
+ (./chap/abs.tex
 LaTeX Font Info:    Font shape `T1/ntxtlf/bx/n' in size <12.045> not available
 (Font)              Font shape `T1/ntxtlf/b/n' tried instead on input line 6.
 LaTeX Font Info:    Font shape `T1/ntxtlf/b/n' will be
@@ -2202,7 +2301,8 @@ LaTeX Font Info:    Font shape `T1/ntxtlf/b/n' will be
 
 ]
 LaTeX Font Info:    Try loading font information for T1+qhv on input line 8.
- (c:/texlive/2018/texmf-dist/tex/latex/tex-gyre/t1qhv.fd
+
+(c:/texlive/2018/texmf-dist/tex/latex/tex-gyre/t1qhv.fd
 File: t1qhv.fd 2009/09/25 v1.2 font definition file for T1/qhv
 )
 LaTeX Font Info:    Font shape `T1/qhv/bx/n' in size <18.06749> not available
@@ -2257,7 +2357,7 @@ m/n/12.045/59 ' \C70/rm/m/n/12.045/81 ô \C70/rm/m/n/12.045/4e : \C70/rm/m/n/12.
 
 
 ])
-Overfull \hbox (5.8196pt too wide) in paragraph at lines 24--77
+Overfull \hbox (5.8196pt too wide) in paragraph at lines 24--80
 \C70/rm/m/n/12.045/6c Õ \C70/rm/m/n/12.045/8f Û \C70/rm/m/n/12.045/88 L \C70/rm
 /m/n/12.045/8b æ \C70/rm/m/n/12.045/7e Æ \C70/rm/m/n/12.045/76 „ \C70/rm/m/n/12
 .045/53 Ù \C70/rm/m/n/12.045/8f ð|\C70/rm/m/n/12.045/30 ^^B| \C70/rm/m/n/12.045
@@ -2394,14 +2494,14 @@ LaTeX Font Info:    Font shape `T1/ntxtlf/m/n' will be
 (Font)              scaled to size 8.0pt on input line 102.
 LaTeX Font Info:    Font shape `T1/ntxtlf/m/n' will be
 (Font)              scaled to size 9.03374pt on input line 102.
-File: lenet.eps Graphic file (type eps)
- <lenet.eps>) [9] [10]
+File: eps/lenet.eps Graphic file (type eps)
+ <eps/lenet.eps>) [9] [10]
 \openout2 = `chap/chap3.aux'.
 
  (./chap/chap3.tex
 ç¬¬ä¸‰ç« 
-File: mynet.eps Graphic file (type eps)
-<mynet.eps> [11
+File: eps/mynet.eps Graphic file (type eps)
+<eps/mynet.eps> [11
 
 
 
@@ -2430,83 +2530,115 @@ m/m/n/12.045/8b º \C70/rm/m/n/12.045/65 ‡ ö \C70/rm/m/n/12.045/53 Ñ \C70/rm/m/n
  []
 
 [12]
-File: rpn.eps Graphic file (type eps)
- <rpn.eps>
-File: ctpn.eps Graphic file (type eps)
- <ctpn.eps>) [13]
+File: eps/rpn.eps Graphic file (type eps)
+ <eps/rpn.eps>
+File: eps/ctpn.eps Graphic file (type eps)
+ <eps/ctpn.eps> [13]
+Underfull \vbox (badness 4673) has occurred while \output is active []
+
+ [14]
+File: eps/a11.eps Graphic file (type eps)
+
+<eps/a11.eps>
+File: eps/a12.eps Graphic file (type eps)
+ <eps/a12.eps>
+File: eps/a13.eps Graphic file (type eps)
+ <eps/a13.eps>
+File: eps/a14.eps Graphic file (type eps)
+ <eps/a14.eps>
+File: eps/a15.eps Graphic file (type eps)
+ <eps/a15.eps> [15]
+File: eps/a21.eps Graphic file (type eps)
+
+<eps/a21.eps>
+File: eps/a22.eps Graphic file (type eps)
+ <eps/a22.eps>
+File: eps/a23.eps Graphic file (type eps)
+ <eps/a23.eps>
+File: eps/a24.eps Graphic file (type eps)
+ <eps/a24.eps>
+File: eps/os1.eps Graphic file (type eps)
+ <eps/os1.eps>
+File: eps/os2.eps Graphic file (type eps)
+
+<eps/os2.eps>
+File: eps/us1.eps Graphic file (type eps)
+ <eps/us1.eps>
+File: eps/us2.eps Graphic file (type eps)
+ <eps/us2.eps>
+File: eps/us3.eps Graphic file (type eps)
+ <eps/us3.eps>
+File: eps/sq1.eps Graphic file (type eps)
+ <eps/sq1.eps>
+File: eps/sq2.eps Graphic file (type eps)
+
+<eps/sq2.eps>
+File: eps/sq3.eps Graphic file (type eps)
+ <eps/sq3.eps>) [16] [17] [18]
 \openout2 = `chap/chap4.aux'.
 
- (./chap/chap4.tex [14
+ (./chap/chap4.tex
+ç¬¬å››ç« 
+) [19
 
+
+
+] [20
 
 
 ]
-ç¬¬å››ç« 
-
-Package hyperref Warning: Difference (2) between bookmark levels is greater 
-(hyperref)                than one, level fixed on input line 8.
-
-
-Overfull \hbox (20.55074pt too wide) in paragraph at lines 19--20
-[]\C70/rm/m/n/12.045/57 ( \C70/rm/m/n/12.045/8b ­ \C70/rm/m/n/12.045/7e Ã \C70/
-rm/m/n/12.045/96 Æ \C70/rm/m/n/12.045/76 „\T1/ntxtlf/m/n/12.045 4\C70/rm/m/n/12
-.045/4e * ^^M \C70/rm/m/n/12.045/54 ^^L \C70/rm/m/n/12.045/4f M \C70/rm/m/n/12.
-045/7f n \C70/rm/m/n/12.045/53 Ö \C70/rm/m/n/12.045/4e ^^@ ^^G \C70/rm/m/n/12.0
-45/5f   \C70/rm/m/n/12.045/56 þ \C70/rm/m/n/12.045/72 G|\C70/rm/m/n/12.045/ff ^
-^L| \C70/rm/m/n/12.045/4e å \C70/rm/m/n/12.045/53 Ê \C70/rm/m/n/12.045/57 ( \C7
-0/rm/m/n/12.045/6d K \C70/rm/m/n/12.045/8b Õ \C70/rm/m/n/12.045/96 Æ \C70/rm/m/
-n/12.045/4e 
- \C70/rm/m/n/12.045/52 ^^F + \C70/rm/m/n/12.045/8b ¡ \C70/rm/m/n/12.045/7b —\T1
-/ntxtlf/m/n/12.045 accuracy|\C70/rm/m/n/12.045/30 ^^A| \T1/ntxtlf/m/n/12.045 pr
-ecision|\C70/rm/m/n/12.045/30 ^^A|
- []
-
-[15]
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
- [16])
-[17] [18]
 LaTeX Font Info:    Font shape `T1/ntxtlf/m/it' will be
-(Font)              scaled to size 10.53937pt on input line 86.
+(Font)              scaled to size 10.53937pt on input line 89.
 LaTeX Font Info:    Font shape `T1/ntxtlf/bx/n' in size <10.53937> not availabl
 e
-(Font)              Font shape `T1/ntxtlf/b/n' tried instead on input line 86.
+(Font)              Font shape `T1/ntxtlf/b/n' tried instead on input line 89.
 LaTeX Font Info:    Font shape `T1/ntxtlf/b/n' will be
-(Font)              scaled to size 10.53937pt on input line 86.
-LaTeX Font Info:    Try loading font information for T1+ntxtt on input line 86.
+(Font)              scaled to size 10.53937pt on input line 89.
+LaTeX Font Info:    Try loading font information for T1+ntxtt on input line 89.
 
  (c:/texlive/2018/texmf-dist/tex/latex/newtx/t1ntxtt.fd
 File: t1ntxtt.fd 2012/04/20 v3.1
 )
 LaTeX Font Info:    Font shape `T1/ntxtt/m/n' will be
-(Font)              scaled to size 10.53937pt on input line 86.
+(Font)              scaled to size 10.53937pt on input line 89.
 LaTeX Font Info:    Font shape `OT1/ntxtlf/m/n' will be
-(Font)              scaled to size 7.0pt on input line 86.
+(Font)              scaled to size 7.0pt on input line 89.
 LaTeX Font Info:    Font shape `OT1/ntxtlf/m/n' will be
-(Font)              scaled to size 5.0pt on input line 86.
+(Font)              scaled to size 5.0pt on input line 89.
 LaTeX Font Info:    Font shape `T1/qhv/m/n' will be
-(Font)              scaled to size 9.48535pt on input line 86.
+(Font)              scaled to size 9.48535pt on input line 89.
 LaTeX Font Info:    Font shape `T1/qhv/m/n' will be
-(Font)              scaled to size 6.29996pt on input line 86.
+(Font)              scaled to size 6.29996pt on input line 89.
 LaTeX Font Info:    Font shape `T1/qhv/m/n' will be
-(Font)              scaled to size 4.49997pt on input line 86.
+(Font)              scaled to size 4.49997pt on input line 89.
+ [21]
+[22
 
+]
+\openout2 = `chap/origin.aux'.
 
-Package caption Warning: Unused \captionsetup[sub] on input line 32.
-See the caption package documentation for explanation.
+ (./chap/origin.tex
+LaTeX Font Info:    Try loading font information for TS1+ntxtlf on input line 6
+0.
 
-[19
+(c:/texlive/2018/texmf-dist/tex/latex/newtx/ts1ntxtlf.fd
+File: ts1ntxtlf.fd 2015/01/18 v1.0 fd file for TS1/ntxtlf
+)
+LaTeX Font Info:    Font shape `TS1/ntxtlf/m/n' will be
+(Font)              scaled to size 12.045pt on input line 60.
+) [23
 
 
 ]
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 87.
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 87.
- (./thesis.aux (./chap/abs.aux) (./chap/chap1.aux) (./chap/chap2.aux)
-(./chap/chap3.aux) (./chap/chap4.aux))
-Package atveryend Info: Empty hook `AtVeryEndDocument' on input line 87.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 87.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 94.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 94.
+ (./thesis.aux
+(./chap/copy.aux) (./chap/abs.aux) (./chap/chap1.aux) (./chap/chap2.aux)
+(./chap/chap3.aux) (./chap/chap4.aux) (./chap/origin.aux))
+Package atveryend Info: Empty hook `AtVeryEndDocument' on input line 94.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 94.
 Package rerunfilecheck Info: File `thesis.out' has not changed.
-(rerunfilecheck)             Checksum: C7DB97693C23643B6EDEFAF174E1B756;1986.
+(rerunfilecheck)             Checksum: 22B2FC5906E02448FC0FB67F5CA29E62;2319.
 
 
 LaTeX Warning: There were multiply-defined labels.
@@ -2516,12 +2648,12 @@ Package logreq Info: Writing requests to 'thesis.run.xml'.
 
  ) 
 Here is how much of TeX's memory you used:
- 54814 strings out of 492650
- 1163514 string characters out of 6133409
- 1614529 words of memory out of 5000000
- 57770 multiletter control sequences out of 15000+600000
- 713073 words of font info for 367 fonts, out of 8000000 for 9000
+ 54476 strings out of 492650
+ 1149589 string characters out of 6133409
+ 1616091 words of memory out of 5000000
+ 57396 multiletter control sequences out of 15000+600000
+ 723169 words of font info for 404 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 64i,12n,105p,10453b,1760s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 64i,12n,102p,10453b,1330s stack positions out of 5000i,500n,10000p,200000b,80000s
 
-Output written on thesis.dvi (27 pages, 201460 bytes).
+Output written on thesis.dvi (33 pages, 121900 bytes).

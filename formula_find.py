@@ -12,7 +12,7 @@ import tensorflow as tf
 
 tf.logging.set_verbosity(tf.logging.ERROR)
 
-NET = 'my_net.ckpt'
+NET = 'models/us/my_net.ckpt'
 
 def main(img, outname):
     im_init = Image.open(img).convert('RGB')

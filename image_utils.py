@@ -63,7 +63,7 @@ def formu_labels(hf_im, im_lines, im_lines_words): # 获得标记信息
         for j in range(len(im_lines_words[i])):
             cont = False
             for k in range(len(red_inds) // 2):
-                if im_lines_words[i][j][0] > red_inds[k] and im_lines_words[i][j][1] < red_inds[k + 1]:
+                if im_lines_words[i][j][0] > red_inds[2*k] and im_lines_words[i][j][1] < red_inds[2*k + 1]:
                     im_labels[i].append(1)
                     cont = True
                     break
@@ -145,7 +145,7 @@ def crop_lines(im, save_line_im=False, check_rotate=True): # 获得文行信息
     # 筛选文行，造训练数据时严格，实际使用可放松
     while (i < lines):
         if (im_lines[i][3] > height_mean and im_lines[i][5] < 0.13) or \
-                (im_lines[i][5] < 0.08 and im_lines[i][4] < 0.13) or \
+                (im_lines[i][5] < 0.1 and im_lines[i][4] < 0.13) or \
                 im_lines[i][3] < height_down * 0.9 or \
                 im_lines[i][4] > 0.8 or \
                 im_lines[i][6] > 0.8 or \
@@ -256,28 +256,28 @@ def crop_words(im, save_words=False): # 获得单行单词信息及图片
 
 # ========================================================
 # 将长单词切割为多个短图片
-    i = 0
-    up = len(im_words)
-    while i < up:
-        if im_words[i][1] - im_words[i][0] >= 2 * lin:
-            im_words.append([im_words[i][0], im_words[i][0] + lin])
-            im_words.append([im_words[i][0] + lin, im_words[i][1]])
-            del im_words[i]
-            up += 1
-        else:
-            i +=1
+    # i = 0
+    # up = len(im_words)
+    # while i < up:
+    #     if im_words[i][1] - im_words[i][0] >= 2 * lin:
+    #         im_words.append([im_words[i][0], im_words[i][0] + lin])
+    #         im_words.append([im_words[i][0] + lin, im_words[i][1]])
+    #         del im_words[i]
+    #         up += 1
+    #     else:
+    #         i +=1
 
-    im_words.sort()
+    # im_words.sort()
 # =============================================================
     
-    i = 0
-    up = len(im_words)
-    while i < up:
-        if im_words[i][1] - im_words[i][0] < lin * 0.3:
-            del im_words[i]
-            up -= 1
-        else:
-            i += 1
+    # i = 0
+    # up = len(im_words)
+    # while i < up:
+    #     if im_words[i][1] - im_words[i][0] < lin * 0.3:
+    #         del im_words[i]
+    #         up -= 1
+    #     else:
+    #         i += 1
 
     words = []
     for i in range(len(im_words)):
