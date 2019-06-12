@@ -8,5 +8,7 @@ Article/
 Article/**
 .vscode/
 .vscode/**
+.vs/
+.vs/**
 dataset/
 dataset/**
