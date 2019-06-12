@@ -4,8 +4,8 @@ test*
 test/
 test/**
 refs/
-Ariticle/
-Ariticle/**
+Article/
+Article/**
 .vscode/
 .vscode/**
 dataset/
