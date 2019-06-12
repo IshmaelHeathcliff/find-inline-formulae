@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.19 (TeX Live 2018/W32TeX) (preloaded format=latex 2018.11.20)  12 JUN 2019 16:14
+This is pdfTeX, Version 3.14159265-2.6-1.40.19 (TeX Live 2018/W32TeX) (preloaded format=latex 2018.11.20)  12 JUN 2019 17:08
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1915,12 +1915,6 @@ LaTeX Warning: Label `fig:fig2' multiply defined.
 LaTeX Warning: Label `sub@fig:fig2' multiply defined.
 
 
-LaTeX Warning: Label `fig:fig4' multiply defined.
-
-
-LaTeX Warning: Label `sub@fig:fig4' multiply defined.
-
-
 LaTeX Warning: Label `fig:label' multiply defined.
 
 
@@ -2537,9 +2531,26 @@ File: eps/ctpn.eps Graphic file (type eps)
 Underfull \vbox (badness 4673) has occurred while \output is active []
 
  [14]
-File: eps/a11.eps Graphic file (type eps)
+LaTeX Font Info:    Font shape `T1/ntxtlf/m/n' will be
+(Font)              scaled to size 12.045pt on input line 102.
+LaTeX Font Info:    Font shape `T1/ntxtlf/m/n' will be
+(Font)              scaled to size 12.045pt on input line 102.
+LaTeX Font Info:    Font shape `T1/ntxtlf/m/n' will be
+(Font)              scaled to size 12.045pt on input line 102.
+LaTeX Font Info:    Font shape `T1/ntxtlf/m/n' will be
+(Font)              scaled to size 10.53937pt on input line 102.
+LaTeX Font Info:    Font shape `T1/ntxtlf/m/n' will be
+(Font)              scaled to size 10.53937pt on input line 102.
+LaTeX Font Info:    Font shape `T1/ntxtlf/m/n' will be
+(Font)              scaled to size 12.045pt on input line 102.
+LaTeX Font Info:    Font shape `T1/ntxtlf/m/n' will be
+(Font)              scaled to size 10.53937pt on input line 102.
+LaTeX Font Info:    Font shape `T1/ntxtlf/m/n' will be
+(Font)              scaled to size 10.53937pt on input line 102.
 
-<eps/a11.eps>
+[15]
+File: eps/a11.eps Graphic file (type eps)
+ <eps/a11.eps>
 File: eps/a12.eps Graphic file (type eps)
  <eps/a12.eps>
 File: eps/a13.eps Graphic file (type eps)
@@ -2547,16 +2558,22 @@ File: eps/a13.eps Graphic file (type eps)
 File: eps/a14.eps Graphic file (type eps)
  <eps/a14.eps>
 File: eps/a15.eps Graphic file (type eps)
- <eps/a15.eps> [15]
-File: eps/a21.eps Graphic file (type eps)
+ <eps/a15.eps>
+File: eps/a24.eps Graphic file (type eps)
 
-<eps/a21.eps>
+<eps/a24.eps>
+LaTeX Font Info:    Font shape `OT1/ntxtlf/b/n' will be
+(Font)              scaled to size 12.045pt on input line 148.
+LaTeX Font Info:    Font shape `OT1/ntxtlf/b/n' will be
+(Font)              scaled to size 8.0pt on input line 148.
+LaTeX Font Info:    Font shape `OT1/ntxtlf/b/n' will be
+(Font)              scaled to size 6.0pt on input line 148.
+File: eps/a21.eps Graphic file (type eps)
+ <eps/a21.eps>
 File: eps/a22.eps Graphic file (type eps)
  <eps/a22.eps>
 File: eps/a23.eps Graphic file (type eps)
  <eps/a23.eps>
-File: eps/a24.eps Graphic file (type eps)
- <eps/a24.eps>
 File: eps/os1.eps Graphic file (type eps)
  <eps/os1.eps>
 File: eps/os2.eps Graphic file (type eps)
@@ -2568,25 +2585,36 @@ File: eps/us2.eps Graphic file (type eps)
  <eps/us2.eps>
 File: eps/us3.eps Graphic file (type eps)
  <eps/us3.eps>
-File: eps/sq1.eps Graphic file (type eps)
- <eps/sq1.eps>
-File: eps/sq2.eps Graphic file (type eps)
+Overfull \hbox (10.60158pt too wide) in paragraph at lines 223--224
+\C70/rm/m/n/12.045/90 è \C70/rm/m/n/12.045/52 ^^F \C70/rm/m/n/12.045/5b W \C70/
+rm/m/n/12.045/6b Í \C70/rm/m/n/12.045/8b Æ \C70/rm/m/n/12.045/52 + \C70/rm/m/n/
+12.045/4e : \C70/rm/m/n/12.045/51 l \C70/rm/m/n/12.045/5f ^^O|\C70/rm/m/n/12.04
+5/ff ^^L| \C70/rm/m/n/12.045/5b ž \C70/rm/m/n/12.045/96 E \C70/rm/m/n/12.045/76
+ „ \C70/rm/m/n/12.045/95 î \C70/rm/m/n/12.045/98 ˜ \C70/rm/m/n/12.045/66 / \C70
+/rm/m/n/12.045/59 ' \C70/rm/m/n/12.045/51 ™ \C70/rm/m/n/12.045/5b W \C70/rm/m/n
+/12.045/6b Í$\OML/ntxmi/m/it/12.045 T$\C70/rm/m/n/12.045/88 « \C70/rm/m/n/12.04
+5/8b Æ \C70/rm/m/n/12.045/52 + \C70/rm/m/n/12.045/4e : \C70/rm/m/n/12.045/51 l 
+\C70/rm/m/n/12.045/5f ^^O|\C70/rm/m/n/12.045/ff ^^L| \C70/rm/m/n/12.045/59 ‚ \C
+70/rm/m/n/12.045/56 þ\T1/ntxtlf/m/n/12.045 3.9(a)(c)|\C70/rm/m/n/12.045/30 ^^B|
+ \C70/rm/m/n/12.045/56 þ\T1/ntxtlf/m/n/12.045 3.9(b)\C70/rm/m/n/12.045/4e -
+ []
 
-<eps/sq2.eps>
+File: eps/sq1.eps Graphic file (type eps)
+<eps/sq1.eps>
+File: eps/sq2.eps Graphic file (type eps)
+ <eps/sq2.eps>
 File: eps/sq3.eps Graphic file (type eps)
- <eps/sq3.eps>) [16] [17] [18]
+ <eps/sq3.eps>) [16] [17] [18] [19]
 \openout2 = `chap/chap4.aux'.
 
- (./chap/chap4.tex
-ç¬¬å››ç« 
-) [19
 
+(./chap/chap4.tex [20
 
-
-] [20
 
 
 ]
+ç¬¬å››ç« 
+[21]) [22]
 LaTeX Font Info:    Font shape `T1/ntxtlf/m/it' will be
 (Font)              scaled to size 10.53937pt on input line 89.
 LaTeX Font Info:    Font shape `T1/ntxtlf/bx/n' in size <10.53937> not availabl
@@ -2605,14 +2633,23 @@ LaTeX Font Info:    Font shape `OT1/ntxtlf/m/n' will be
 (Font)              scaled to size 7.0pt on input line 89.
 LaTeX Font Info:    Font shape `OT1/ntxtlf/m/n' will be
 (Font)              scaled to size 5.0pt on input line 89.
+LaTeX Font Info:    Font shape `OT1/ntxtlf/b/n' will be
+(Font)              scaled to size 10.53937pt on input line 89.
+LaTeX Font Info:    Font shape `OT1/ntxtlf/b/n' will be
+(Font)              scaled to size 7.0pt on input line 89.
+LaTeX Font Info:    Font shape `OT1/ntxtlf/b/n' will be
+(Font)              scaled to size 5.0pt on input line 89.
 LaTeX Font Info:    Font shape `T1/qhv/m/n' will be
 (Font)              scaled to size 9.48535pt on input line 89.
 LaTeX Font Info:    Font shape `T1/qhv/m/n' will be
 (Font)              scaled to size 6.29996pt on input line 89.
 LaTeX Font Info:    Font shape `T1/qhv/m/n' will be
 (Font)              scaled to size 4.49997pt on input line 89.
- [21]
-[22
+ [23
+
+
+]
+[24
 
 ]
 \openout2 = `chap/origin.aux'.
@@ -2626,7 +2663,7 @@ File: ts1ntxtlf.fd 2015/01/18 v1.0 fd file for TS1/ntxtlf
 )
 LaTeX Font Info:    Font shape `TS1/ntxtlf/m/n' will be
 (Font)              scaled to size 12.045pt on input line 60.
-) [23
+) [25
 
 
 ]
@@ -2648,12 +2685,12 @@ Package logreq Info: Writing requests to 'thesis.run.xml'.
 
  ) 
 Here is how much of TeX's memory you used:
- 54476 strings out of 492650
- 1149589 string characters out of 6133409
- 1616091 words of memory out of 5000000
- 57396 multiletter control sequences out of 15000+600000
- 723169 words of font info for 404 fonts, out of 8000000 for 9000
+ 54506 strings out of 492650
+ 1150065 string characters out of 6133409
+ 1617195 words of memory out of 5000000
+ 57424 multiletter control sequences out of 15000+600000
+ 728575 words of font info for 414 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 64i,12n,102p,10453b,1330s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 64i,12n,102p,10453b,1332s stack positions out of 5000i,500n,10000p,200000b,80000s
 
-Output written on thesis.dvi (33 pages, 121900 bytes).
+Output written on thesis.dvi (35 pages, 127392 bytes).

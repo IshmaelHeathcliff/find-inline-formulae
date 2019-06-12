@@ -1,7 +1,11 @@
 20*
 __pycache__
 test*
+test/
+test/**
 refs/
+Ariticle/
+Ariticle/**
 .vscode/
 .vscode/**
 dataset/

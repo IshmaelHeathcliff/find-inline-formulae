@@ -97,7 +97,12 @@ Sq& 0.9946& 0.9418& 0.9995& 0.9698\\
 \section{实际效果演示}
 \noindent
 
-三个网络的实际表现都已经非常不错，实际准确率非常高，故接下来主要演示一下结果不准确的部分及其原因。首先是由于文行分割导致的问题，有些过短的行被排除了，如果其包含公式就不会被检测，这样的情况如图。然后是一些公式符号单独成行，但这一行也被排除了，如图。还有有的行间公式没有无法排除掉，造成如图的情况。
+三个网络的实际表现都已经非常不错，实际准确率非常高，故接下来主要演示一下结果不准确的部分及其原因。
+
+三个模型有些错误的地方是共同都有的，这些错误主要有两个原因，一是由于文行分割不精确造成的，一是由于网络学习的结果不准确造成的。
+
+首先是由于文行分割导致的问题，有些行和过小的行被排除了，如果其包含公式就不会被检测，这样的情况如图3.5(a)(b)(d)。然后是一些公式符号单独成行，但这一行也被排除了，如图3.5(c)。还有有的行间公式无法排除掉，造成如图3.5(e)的情况。另外除了文行分割还有由于单词分割无法准确分别的状况，如图3.5(f)中的-，因为单词分割时只能与$M$一起判断。
+
 \begin{figure}[hp]
     \centering
     \begin{subfigure}[b]{\linewidth}
@@ -130,9 +135,17 @@ Sq& 0.9946& 0.9418& 0.9995& 0.9698\\
     \caption{\label{fig:fig5}}
     \end{subfigure}
 
+    \begin{subfigure}[b]{\linewidth}
+    \centering
+    \includegraphics[scale=0.3]{eps/a24.eps}
+    \caption{\label{fig:fig6}}
+    \end{subfigure}
+
     \caption{文行分割导致的问题}
     \label{fig:label}
 \end{figure}
+
+网络无法准确判断的情况主要是一些字母符号和标点符号，如图3.6(a)中的实数集符号$\mathbf{R}$，图3.6(b)(c)中的句点，这两种情况是三种方法都无法准确识别的。
 
 \begin{figure}[hp]
     \centering
@@ -154,16 +167,12 @@ Sq& 0.9946& 0.9418& 0.9995& 0.9698\\
     \caption{\label{fig:fig2}}
     \end{subfigure}
 
-    \begin{subfigure}[b]{\linewidth}
-    \centering
-    \includegraphics[scale=0.3]{eps/a24.eps}
-    \caption{\label{fig:fig4}}
-    \end{subfigure}
-
     \caption{网络学习的问题}
     \label{fig:label}
 \end{figure}
 
+
+尽管三种方法都使用相同的文行分割，但在Os中出现的将行间公式误判却比另两种方法要多，如图3.7(a)，这一个行间公式在另两种方法中并没有被识别为公式。Os的另一处错误则是在如图3.7(b)中，对$1.$这个序号的错误判断，但其他数字的序号则没有被判断为公式。
 
 \begin{figure}[hp]
     \centering
@@ -180,10 +189,11 @@ Sq& 0.9946& 0.9418& 0.9995& 0.9698\\
     \caption{\label{fig:fig2}}
     \end{subfigure}
 
-
     \caption{Os的问题}
     \label{fig:label}
 \end{figure}
+
+Us的网络没有将单独的整数集符号$\mathbf{Z}$识别为公式，如图3.8(a)(b)，另两个方法没有这个问题。另外Us出现了将原本不是公式的部分识别为公式，如图3.8(c)中的$l=1$，在原始的标注中只有$l$被标记为公式部分，另两个方法也只识别了$l$，但Us将$=1$也包含其中。
 
 \begin{figure}[hp]
     \centering
@@ -206,10 +216,12 @@ Sq& 0.9946& 0.9418& 0.9995& 0.9698\\
     \caption{\label{fig:fig3}}
     \end{subfigure}
 
-
     \caption{Us的问题}
     \label{fig:label}
 \end{figure}
+
+Sq由于做了单词方形分割，所以会出现一些别的方法没有的问题，主要是将一些部分字母识别为公式，实际的问题是大写字母$T$被识别为公式，如图3.9(a)(c)。图3.9(b)中则比其他两个方法多错误识别了一个句点。
+
 
 \begin{figure}[hp]
     \centering

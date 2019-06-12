@@ -40,8 +40,8 @@
 \defcounter {refsection}{0}\relax 
 \contentsline {section}{\numberline {3.6}实际效果演示}{16}{section.3.6}
 \defcounter {refsection}{0}\relax 
-\contentsline {chapter}{\numberline {第四章\hspace {.3em}}结果和展望}{19}{chapter.4}
+\contentsline {chapter}{\numberline {第四章\hspace {.3em}}结果和展望}{21}{chapter.4}
 \defcounter {refsection}{0}\relax 
-\contentsline {chapter}{参考文献}{21}{appendix*.19}
+\contentsline {chapter}{参考文献}{23}{appendix*.19}
 \defcounter {refsection}{0}\relax 
-\contentsline {chapter}{北京大学学位论文原创性声明和使用授权说明}{23}{appendix*.20}
+\contentsline {chapter}{北京大学学位论文原创性声明和使用授权说明}{25}{appendix*.20}
