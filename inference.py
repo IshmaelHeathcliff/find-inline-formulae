@@ -1,3 +1,4 @@
+#coding=utf-8
 # 神经网络结构， conv3 --> pool --> conv3 --> pool --conv3 --> spp --> fc1 --> fc2
 
 import tensorflow as tf

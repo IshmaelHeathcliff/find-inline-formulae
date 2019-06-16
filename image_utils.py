@@ -1,3 +1,4 @@
+#coding=utf-8
 # 图片处理工具合集
 
 import PIL

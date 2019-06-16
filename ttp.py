@@ -1,3 +1,4 @@
+#coding=utf-8
 # 命令行命令， 单个tex转换
 
 import sys

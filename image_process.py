@@ -1,3 +1,4 @@
+#coding=utf-8
 # 批量处理图片获得数据tfrecords
 
 import tensorflow as tf

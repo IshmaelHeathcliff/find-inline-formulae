@@ -1,3 +1,4 @@
+#coding=utf-8
 # 输入图片路径， 将图中公式部分加上红框
 
 import os
@@ -12,7 +13,7 @@ import tensorflow as tf
 
 tf.logging.set_verbosity(tf.logging.ERROR)
 
-NET = 'models/us/my_net.ckpt'
+NET = 'models/sq/my_net.ckpt'
 
 def main(img, outname):
     im_init = Image.open(img).convert('RGB')
@@ -102,10 +103,10 @@ def flat2d(lis):
         out_lis.extend(lis[i])
     return out_lis
 
+
 if len(sys.argv) == 2:
     main(sys.argv[1], 'out.png')
-else:
-    for i in range(47):
-        main('dataset/test/0201001_images/nf/' + str(i+1) + '.png', str(i+1) + '.png')
 
-
+# else:
+#     for i in range(47):
+#         main('dataset/test/0201001_images/nf/' + str(i+1) + '.png', str(i+1) + '.png')

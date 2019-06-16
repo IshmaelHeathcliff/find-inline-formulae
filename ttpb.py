@@ -1,3 +1,4 @@
+#coding=utf-8
 # 命令行命令， 批量tex转换
 
 import sys

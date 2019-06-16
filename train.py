@@ -1,3 +1,4 @@
+#coding=utf-8
 # 神经网络训练主体程序
 
 import os

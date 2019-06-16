@@ -1,3 +1,4 @@
+#coding=utf-8
 # 将tex文件转换为png图片
 
 import re

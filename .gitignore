@@ -4,8 +4,6 @@ test*
 test/
 test/**
 refs/
-Article/
-Article/**
 .vscode/
 .vscode/**
 .vs/
